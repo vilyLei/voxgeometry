@@ -1,1 +1,1 @@
-build this geometric algorithm system, in order to get high runtime performance.
+build this geometric algorithm system, in order to get high runtime performance geometry computing process.
