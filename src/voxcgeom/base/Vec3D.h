@@ -160,7 +160,7 @@ namespace voxcgeom
                 z = z - idotn2 * nv.z;
             }
 
-            // 右手法则(为正)
+            // positive direction: right hand rule
             void static Cross(const Vec3D& a, const Vec3D& b, Vec3D& result)
             {
                 result.x = a.y * b.z - a.z * b.y;

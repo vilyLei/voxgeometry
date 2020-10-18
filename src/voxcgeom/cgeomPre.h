@@ -23,5 +23,7 @@ Author: Vily
 #define VCG_MATH_1_OVER_SQRT2					0.70710678118654752440					// 1/sqrt(2)
 
 typedef float									VCG_Number;
-const VCG_Number								VCG_MATH_MIN_POSITIVE = 1e-6f;
-const VCG_Number								VCG_MATH_MAX_NEGTIVE = -1e-6f;
+const VCG_Number								VCG_MATH_MIN_POSITIVE = 1e-7f;
+const VCG_Number								VCG_MATH_MAX_POSITIVE = 3.4e20f;
+const VCG_Number								VCG_MATH_MIN_NEGATIVE = -3.4e20f;
+const VCG_Number								VCG_MATH_MAX_NEGATIVE = -1e-7f;

@@ -3,10 +3,17 @@
 #include <iomanip>
 #include "voxcgeomConfig.h"
 #include "voxcgeom/base/Vec3D.h"
+#include "voxcgeom/base/AABB.h"
+
 int main (int argc, char *argv[])
 {
     Vec3D va{ 1.1f,2.1f,3.3f,4.5f };
     va.coutThis();
+    AABB ab0{ Vec3D{10.0f,10.0f,10.0f}, Vec3D{110.0f,110.0f,110.0f} };
+    AABB ab1{ Vec3D{-30.0f,-30.0f,-30.0f}, Vec3D{-110.0f,-110.0f,-110.0f} };
+    bool boo = ab0.intersect(ab1);
+    std::cout << "boo: " << boo << std::endl;
+
     VCG_Number degree = Vec3D::DegreeBetween(Vec3D::X_AXIS, Vec3D::Y_AXIS);
     std::cout << "degree: " << degree << std::endl;
     //  std::cout<< std::setiosflags(std::ios::fixed);

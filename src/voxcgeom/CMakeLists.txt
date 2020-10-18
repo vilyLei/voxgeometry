@@ -7,8 +7,11 @@ set(CGEOM_FILES
 set(BASE_FILES
     # Header Files
     base/Vec3D.h
+    base/AABB.h
     # Source Files
-    base/Vec3D.cc)
+    base/Vec3D.cc
+    base/AABB.cc
+    )
 
 source_group("base\\" FILES ${BASE_FILES})
 

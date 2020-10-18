@@ -22,14 +22,14 @@ namespace voxcgeom
 			std::cout << "Vec3D(x="<<x<<",y="<<y<<",z="<<z<<",w="<<w<<")" << std::endl;
 		}
 
-        // 右手法则(为正)
+        // positive direction: right hand rule
         void static Cross(const Vec3D& a, const Vec3D& b, Vec3D& result)
         {
             result.x = a.y * b.z - a.z * b.y;
             result.y = a.z * b.x - a.x * b.z;
             result.z = a.x * b.y - a.y * b.x;
         }
-        // (va1 - va0) 叉乘 (vb1 - vb0), 右手法则(为正)
+        // (va1 - va0) cross (vb1 - vb0), positive direction: right hand rule
         void Vec3D::CrossSubtract(const Vec3D& va0, const Vec3D& va1, const Vec3D& vb0, const Vec3D& vb1, Vec3D& result)
         {
             s_v3Stv0.x = va1.x - va0.x;
