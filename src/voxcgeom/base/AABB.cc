@@ -120,7 +120,7 @@ namespace voxcgeom
 			outV.copyFrom(ltv);
 			outV.scaleBy(ltInvtv.w);
 			outV.addBy(lpv);
-			ltv.w = 1.0;
+			ltv.w = 1.0f;
 
 			return true;
 		}
