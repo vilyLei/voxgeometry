@@ -23,7 +23,7 @@ namespace voxcgeom
 		}
 
         // positive direction: right hand rule
-        void static Cross(const Vec3D& a, const Vec3D& b, Vec3D& result)
+        void Vec3D::Cross(const Vec3D& a, const Vec3D& b, Vec3D& result)
         {
             result.x = a.y * b.z - a.z * b.y;
             result.y = a.z * b.x - a.x * b.z;

@@ -47,7 +47,7 @@ namespace voxcgeom
                 y = v3.y;
                 z = v3.z;
             }
-            inline VCG_Number dot(const Vec3D& v3)
+            inline VCG_Number dot(const Vec3D& v3) const
             {
                 return x * v3.x + y * v3.y + z * v3.z;
             }
@@ -159,15 +159,21 @@ namespace voxcgeom
                 y = y - idotn2 * nv.y;
                 z = z - idotn2 * nv.z;
             }
-
-            // positive direction: right hand rule
-            void static Cross(const Vec3D& a, const Vec3D& b, Vec3D& result)
+            void subVecsTo(const Vec3D& va, const Vec3D& vb)
             {
-                result.x = a.y * b.z - a.z * b.y;
-                result.y = a.z * b.x - a.x * b.z;
-                result.z = a.x * b.y - a.y * b.x;
+                x = va.x - vb.x;
+                y = va.y - vb.y;
+                z = va.z - vb.z;
             }
-            // (va1 - va0) 叉乘 (vb1 - vb0), 右手法则(为正)
+            void addVecsTo(const Vec3D& va, const Vec3D& vb)
+            {
+                x = va.x + vb.x;
+                y = va.y + vb.y;
+                z = va.z + vb.z;
+            }
+            // positive direction: right hand rule
+            static void Cross(const Vec3D& a, const Vec3D& b, Vec3D& result);
+            // (va1 - va0) cross (vb1 - vb0), positive direction: right hand rule
             static void CrossSubtract(const Vec3D& va0, const Vec3D& va1, const Vec3D& vb0, const Vec3D& vb1, Vec3D& result);
             static void Subtract(const Vec3D& a, const Vec3D& b, Vec3D& result);
             static VCG_Number DistanceSquared(const Vec3D& a, const Vec3D& b);
