@@ -143,11 +143,20 @@ namespace voxcgeom
                     , x * v3.y - y * v3.x
                     );
             }
+            // RVO
+            inline Vec3D crossProduct(const Vec3D& a)
+            {
+                return Vec3D(
+                    y * a.z - z * a.y
+                    , z * a.x - x * a.z
+                    , x * a.y - y * a.x
+                    );
+            }
             inline void crossBy(const Vec3D& v3)
             {
-                VCG_Number px = y * v3.z - z * v3.y;
-                VCG_Number py = z * v3.x - x * v3.z;
-                VCG_Number pz = x * v3.y - y * v3.x;
+                auto&& px = y * v3.z - z * v3.y;
+                auto&& py = z * v3.x - x * v3.z;
+                auto&& pz = x * v3.y - y * v3.x;
                 x = px;
                 y = py;
                 z = pz;
@@ -170,6 +179,13 @@ namespace voxcgeom
                 x = va.x + vb.x;
                 y = va.y + vb.y;
                 z = va.z + vb.z;
+            }
+
+            inline void crossVecsTo(const Vec3D& va, const Vec3D& vb)
+            {
+                x = va.y * vb.z - va.z * vb.y;
+                y = va.z * vb.x - va.x * vb.z;
+                z = va.x * vb.y - va.y * vb.x;
             }
             // positive direction: right hand rule
             static void Cross(const Vec3D& a, const Vec3D& b, Vec3D& result);
