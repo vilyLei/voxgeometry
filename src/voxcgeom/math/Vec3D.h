@@ -8,13 +8,13 @@ Author: Vily
 #include "../cgeomPre.h"
 namespace voxcgeom
 {
-	namespace base
+	namespace math
 	{
 		class Vec3D
 		{
 		public:
 			float x,y,z,w;
-			Vec3D()												                        = default;
+			Vec3D();
 			Vec3D(VCG_Number px, VCG_Number py, VCG_Number pz, VCG_Number pw = 1.0f);
 			Vec3D(const Vec3D& v3)								                        = default;
 			Vec3D(Vec3D&& rhs)									                        = default;
@@ -209,4 +209,4 @@ namespace voxcgeom
 		};
 	}
 }
-typedef voxcgeom::base::Vec3D Vec3D;
+typedef voxcgeom::math::Vec3D Vec3D;

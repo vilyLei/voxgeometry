@@ -4,7 +4,7 @@
 
 namespace voxcgeom
 {
-	namespace base
+	namespace math
 	{
 		Vec3D Vec3D::s_v3Stv0;
 		Vec3D Vec3D::s_v3Stv1;
@@ -14,6 +14,9 @@ namespace voxcgeom
 		const Vec3D Vec3D::Z_AXIS{ 0.0f, 0.0f, 1.0f};
         const Vec3D Vec3D::ZERO{ 0.0f, 0.0f, 0.0f };
 
+        Vec3D::Vec3D() : x(0.0f), y(0.0f), z(0.0f), w(1.0f)
+        {
+        }
 		Vec3D::Vec3D(float px, float py, float pz, float pw): x(px), y(py), z(pz), w(pw)
 		{
 		}

@@ -5,7 +5,7 @@ Author: Vily
 */
 #pragma once
 #include <vector>
-#include "Vec3D.h"
+#include "../math/Vec3D.h"
 
 namespace voxcgeom
 {
