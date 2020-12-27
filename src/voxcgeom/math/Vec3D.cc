@@ -1,5 +1,6 @@
 
 #include <iostream>
+
 #include "Vec3D.h"
 
 namespace voxcgeom
@@ -17,7 +18,7 @@ namespace voxcgeom
         Vec3D::Vec3D() : x(0.0f), y(0.0f), z(0.0f), w(1.0f)
         {
         }
-		Vec3D::Vec3D(float px, float py, float pz, float pw): x(px), y(py), z(pz), w(pw)
+		Vec3D::Vec3D(VCG_Number px, VCG_Number py, VCG_Number pz, VCG_Number pw): x(px), y(py), z(pz), w(pw)
 		{
 		}
 		void Vec3D::coutThis()

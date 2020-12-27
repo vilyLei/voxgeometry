@@ -1,6 +1,7 @@
 
 #include <assert.h>
 #include <cmath>
+#include "../cgeomPre.h"
 #include "Quaternion.h"
 #include "Vec3D.h"
 #include "EulerAngles.h"
@@ -8,29 +9,6 @@ namespace voxcgeom
 {
 	namespace math
 	{
-		// 计算角度的sin 和 cos 值
-			// 在某些平台上，如果需要这两个值，同时计算要比分开计算快
-		inline void sinCos(float* returnSin, float* returnCos, float rad_theta)
-		{
-			// 为了计算简单，这里只使用标准三角函数
-			*returnSin = sin(rad_theta);
-			*returnCos = cos(rad_theta);
-		}
-		float safeACos(float x)
-		{
-			// 检查边界条件
-			if (x <= -1.0f)
-			{
-				return VCG_MATH_PI;
-			}
-			if (x >= 1.0f)
-			{
-				return 0.0f;
-			}
-
-			return acos(x);
-		}
-			// 公共函数
 			inline float vector3Mag(const Vec3D& a)
 			{
 				return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
@@ -89,9 +67,9 @@ namespace voxcgeom
 				// 计算半角的 sin和cos
 				float sp, sb, sh;
 				float cp, cb, ch;
-				sinCos(&sp,&cp,orientation.pitch * 0.5f);
-				sinCos(&sb, &cb, orientation.bank * 0.5f);
-				sinCos(&sh, &ch, orientation.heading * 0.5f);
+				SinCos(&sp,&cp,orientation.pitch * 0.5f);
+				SinCos(&sb, &cb, orientation.bank * 0.5f);
+				SinCos(&sh, &ch, orientation.heading * 0.5f);
 				//
 				w = ch * cp * cb + sh * sp * sb;
 				x = ch * sp* cb + sh * cp * sb;
@@ -106,9 +84,9 @@ namespace voxcgeom
 				// 计算半角的 sin和cos
 				float sp, sb, sh;
 				float cp, cb, ch;
-				sinCos(&sp, &cp, orientation.pitch * 0.5f);
-				sinCos(&sb, &cb, orientation.bank * 0.5f);
-				sinCos(&sh, &ch, orientation.heading * 0.5f);
+				SinCos(&sp, &cp, orientation.pitch * 0.5f);
+				SinCos(&sb, &cb, orientation.bank * 0.5f);
+				SinCos(&sh, &ch, orientation.heading * 0.5f);
 				//
 				w = ch * cp * cb + sh * sp * sb;
 				x = -ch * sp* cb - sh * cp * sb;
@@ -158,7 +136,7 @@ namespace voxcgeom
 			float Quaternion::getRotationAngle() const
 			{
 				// 计算半角,w = cos(theta / 2);
-				float thetaOver2 = safeACos(w);
+				float thetaOver2 = SafeACos(w);
 				return thetaOver2 * 2.0f;
 			}
 			// 提取旋转轴

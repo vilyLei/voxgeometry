@@ -3,6 +3,7 @@
 #include <iomanip>
 #include "voxcgeomConfig.h"
 #include "voxcgeom/math/Vec3D.h"
+#include "voxcgeom/math/Matrix4.h"
 #include "voxcgeom/base/AABB.h"
 #include "voxcgeom/base/Sphere.h"
 #include "voxcgeom/base/StraightLine.h"
@@ -11,6 +12,13 @@
 #include "voxcgeom/base/Plane.h"
 #include "voxcgeom/base/Cone.h"
 #include "voxcgeom/calc/PlaneCalc.h"
+
+//////////////////////////////////////////////////////////////
+///
+/// demo
+/// 
+/// /////////////////////////////////////////////////////////
+#include "../demo/math/MatrixComputer.h"
 
 void testCone()
 {
@@ -52,7 +60,8 @@ void testCone()
     bool boo1 = pcone.intersectionSL(pa, tv, nearV0, nearV1);
     std::cout << "pcone.intersectionSL(): " << boo1 << std::endl;
 }
-int main (int argc, char *argv[])
+
+void testSimple()
 {
     Vec3D va{ 1.1f,2.1f,3.3f,4.5f };
     va.coutThis();
@@ -61,15 +70,42 @@ int main (int argc, char *argv[])
     bool boo = ab0.intersect(ab1);
     std::cout << "boo: " << boo << std::endl;
 
-    std::cout<< std::setiosflags(std::ios::fixed);
-    std::cout<< std::setprecision(10) << VCG_MATH_PI << std::endl;
+    std::cout << std::setiosflags(std::ios::fixed);
+    std::cout << std::setprecision(10) << VCG_MATH_PI << std::endl;
 
     VCG_Number degree = Vec3D::DegreeBetween(Vec3D::X_AXIS, Vec3D::Y_AXIS);
     std::cout << "degree: " << degree << std::endl;
     Sphere sph;
     std::cout << "Sphere::uid: " << sph.uid << std::endl;
+}
+void testMatrix4()
+{
+    int setprecisionSize = 6;
+    std::cout << std::setiosflags(std::ios::fixed);
+    std::cout << std::setprecision(setprecisionSize) << "testMatrix4" << std::endl;
+    Matrix4 mat4A;
+    mat4A.identity();
+    mat4A.setScaleXYZ(10.0f,4.5f,2.1f);
+    mat4A.setRotationEulerAngle(30.0f,20.0f,80.0f);
+    mat4A.setTranslationXYZ(30.0f,20.0f,80.0f);
+    mat4A.coutThis();
 
-    testCone();
+    mat4A.pointAt(Vec3D(), Vec3D(0.0f,0.0f,100.0f), Vec3D(0.0f,1.0f,0.0f));
+    std::cout << "mat4A.pointAt: " << std::endl;
+    mat4A.coutThis();
+}
+void testMathDemo()
+{
+    MatrixComputer matCompter;
+    matCompter.coutThis();
+
+}
+int main (int argc, char *argv[])
+{
+    //  testSimple();
+    //  testCone();
+    //  testMatrix4();
+    testMathDemo();
     //  std::cout<< std::setiosflags(std::ios::fixed);
     //  std::cout<< std::setprecision(20) << VCG_MATH_PI << std::endl;
     //  std::cout<<"boxcgeom init...\n";

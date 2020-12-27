@@ -17,6 +17,10 @@ include_directories ("${PROJECT_SOURCE_DIR}/voxcgeom")
 add_subdirectory (voxcgeom)
 set (EXTRA_LIBS ${EXTRA_LIBS} voxcgeom)
 
+include_directories ("${PROJECT_SOURCE_DIR}/demo")
+add_subdirectory (demo)
+set (EXTRA_LIBS ${EXTRA_LIBS} demo)
+
 # add the executable
 add_executable(voxcgeometry voxcgeom.cc)
 #target_link_libraries (voxcgeometry voxcgeom)

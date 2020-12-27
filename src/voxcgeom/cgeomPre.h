@@ -27,3 +27,8 @@ const VCG_Number								VCG_MATH_MIN_POSITIVE = 1e-7f;
 const VCG_Number								VCG_MATH_MAX_POSITIVE = 3.4e20f;
 const VCG_Number								VCG_MATH_MIN_NEGATIVE = -3.4e20f;
 const VCG_Number								VCG_MATH_MAX_NEGATIVE = -1e-7f;
+#ifndef __VCG_MATH_H__
+#define __VCG_MATH_H__
+extern VCG_Number SafeACos(VCG_Number x);
+extern void SinCos(VCG_Number* returnSin, VCG_Number* returnCos, VCG_Number rad_theta);
+#endif

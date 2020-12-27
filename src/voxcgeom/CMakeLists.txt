@@ -3,6 +3,7 @@ set(CGEOM_FILES
     # Header Files
     cgeomPre.h
     # Source Files
+    cgeomPre.cc
     )
 
 set(MATH_FILES
@@ -11,11 +12,13 @@ set(MATH_FILES
     math/Orientation3D.h
     math/EulerAngles.h
     math/Quaternion.h
+    math/Matrix4.h
     # Source Files
     math/Vec3D.cc
     math/Orientation3D.cc
     math/EulerAngles.cc
     math/Quaternion.cc
+    math/Matrix4.cc
     )
 
 set(BASE_FILES

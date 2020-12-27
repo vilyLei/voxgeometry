@@ -13,7 +13,7 @@ namespace voxcgeom
 		class Vec3D
 		{
 		public:
-			float x,y,z,w;
+            VCG_Number x,y,z,w;
 			Vec3D();
 			Vec3D(VCG_Number px, VCG_Number py, VCG_Number pz, VCG_Number pw = 1.0f);
 			Vec3D(const Vec3D& v3)								                        = default;
@@ -125,7 +125,7 @@ namespace voxcgeom
                 z -= v3.z;
             }
             // RVO
-            inline Vec3D subtract(const Vec3D& v3)
+            inline Vec3D subtract(const Vec3D& v3) const
             {
                 return Vec3D(x - v3.x, y - v3.y, z - v3.z);
             }
@@ -144,7 +144,7 @@ namespace voxcgeom
                     );
             }
             // RVO
-            inline Vec3D crossProduct(const Vec3D& a)
+            inline Vec3D crossProduct(const Vec3D& a) const
             {
                 return Vec3D(
                     y * a.z - z * a.y
