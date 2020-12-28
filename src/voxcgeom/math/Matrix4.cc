@@ -20,11 +20,11 @@ namespace voxcgeom
 		
 		int Matrix4::s_uid{0};
 		Matrix4 Matrix4::s_tmat4{};
-		VCG_Number Matrix4::s_initData[16]{
-				1.0,0.0,0.0,0.0,
-				0.0,1.0,0.0,0.0,
-				0.0,0.0,1.0,0.0,
-				0.0,0.0,0.0,1.0
+		const VCG_Number Matrix4::s_initData[16]{
+				1.0f,0.0f,0.0f,0.0f,
+				0.0f,1.0f,0.0f,0.0f,
+				0.0f,0.0f,1.0f,0.0f,
+				0.0f,0.0f,0.0f,1.0f
 		};
 		Matrix4::Matrix4()
 		{
@@ -94,7 +94,7 @@ namespace voxcgeom
 		}
 		void Matrix4::identity()
 		{
-			std::memcpy(m_localFS32, &s_initData, 16);
+			std::memcpy(m_localFS32, &s_initData, VCG_MATRIX4_DATA_SIZE);
 		}
 		VCG_Number Matrix4::determinant()
 		{
@@ -416,22 +416,22 @@ namespace voxcgeom
 		}
 		void Matrix4::copyFromF32Arr(VCG_Number* fs32Arr, unsigned int index)
 		{
-			std::memcpy(m_localFS32, fs32Arr + index, 16);
+			std::memcpy(m_localFS32, fs32Arr + index, VCG_MATRIX4_DATA_SIZE);
 		}
 		void Matrix4::copyToF32Arr(VCG_Number* fs32Arr, unsigned int index)
 		{
-			std::memcpy(fs32Arr + index, m_localFS32, 16);
+			std::memcpy(fs32Arr + index, m_localFS32, VCG_MATRIX4_DATA_SIZE);
 		}
 		void Matrix4::copyFrom(const Matrix4& mat_other)
 		{
-			std::memcpy(m_localFS32, mat_other.getLocalFS32(), 16);
+			std::memcpy(m_localFS32, mat_other.getLocalFS32(), VCG_MATRIX4_DATA_SIZE);
 		}
 
 		void Matrix4::copyRawDataFrom(VCG_Number* float_rawDataArr, unsigned int rawDataLength, unsigned int index, bool bool_tp)
 		{
 			if (bool_tp) transpose();
 			rawDataLength = rawDataLength - index;
-			int c = 0;
+			unsigned int c = 0;
 			while (c < rawDataLength)
 			{
 				m_fs32[m_index + c] = float_rawDataArr[c + index];
@@ -442,7 +442,7 @@ namespace voxcgeom
 		void Matrix4::copyRawDataTo(VCG_Number* float_rawDataArr, unsigned int rawDataLength, unsigned int index, bool bool_tp)
 		{
 			if (bool_tp) transpose();
-			int c = 0;
+			unsigned int c = 0;
 			while (c < rawDataLength)
 			{
 				float_rawDataArr[c + index] = m_fs32[m_index + c];
@@ -891,11 +891,11 @@ namespace voxcgeom
 			break;
 			};
 			//TODO: need thinking
-			if (components[2].x == 0)m_localFS32[0] = 0;// 1e-15f;
-			if (components[2].y == 0)m_localFS32[5] = 0;// 1e-15f;
-			if (components[2].z == 0)m_localFS32[10] = 0;// 1e-15f;
+			if (components[2].x == 0.0f)m_localFS32[0] = 0.0f;// 1e-15f;
+			if (components[2].y == 0.0f)m_localFS32[5] = 0.0f;// 1e-15f;
+			if (components[2].z == 0.0f)m_localFS32[10] = 0.0f;// 1e-15f;
 			scale = nullptr;
-			return !(components[2].x == 0.0f || components[2].y == 0.0f || components[2].y == 0.0f);
+			return true;
 		}
 		Vec3D Matrix4::deltaTransformVector(const Vec3D& v3)
 		{

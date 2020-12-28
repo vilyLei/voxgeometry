@@ -15,7 +15,7 @@ namespace voxcgeom
 			}
 			const Quaternion kQuaternionIdentity;// = { 1.0f,0.0f,0.0f,0.0f };//后面的写法 c++11才支持
 			// 成员函数
-			void Quaternion::setToRotateAboutX(float rad_theta)
+			void Quaternion::setToRotateAboutX(VCG_Number rad_theta)
 			{
 				// 计算半角
 				float thetaOver2 = rad_theta * 0.5f;
@@ -25,7 +25,7 @@ namespace voxcgeom
 				y = 0.0f;
 				z = 0.0f;
 			}
-			void Quaternion::setToRotateAboutY(float rad_theta)
+			void Quaternion::setToRotateAboutY(VCG_Number rad_theta)
 			{
 				// 计算半角
 				float thetaOver2 = rad_theta * 0.5f;
@@ -35,7 +35,7 @@ namespace voxcgeom
 				y = sin(thetaOver2);
 				z = 0.0f;
 			}
-			void Quaternion::setToRotateAboutZ(float rad_theta)
+			void Quaternion::setToRotateAboutZ(VCG_Number rad_theta)
 			{
 				// 计算半角
 				float thetaOver2 = rad_theta * 0.5f;
@@ -45,7 +45,7 @@ namespace voxcgeom
 				y = 0.0f;
 				z = sin(thetaOver2);
 			}
-			void Quaternion::setToRotateAboutAxis(const Vec3D &axis, float rad_theta)
+			void Quaternion::setToRotateAboutAxis(const Vec3D &axis, VCG_Number rad_theta)
 			{
 				// 旋转轴必须标准化
 				assert(fabs(vector3Mag(axis) - 1.0f) < 0.01f);
@@ -65,8 +65,8 @@ namespace voxcgeom
 			void Quaternion::setToRotateObjectToIntertial(const EulerAngles &orientation)
 			{
 				// 计算半角的 sin和cos
-				float sp, sb, sh;
-				float cp, cb, ch;
+				VCG_Number sp, sb, sh;
+				VCG_Number cp, cb, ch;
 				SinCos(&sp,&cp,orientation.pitch * 0.5f);
 				SinCos(&sb, &cb, orientation.bank * 0.5f);
 				SinCos(&sh, &ch, orientation.heading * 0.5f);
@@ -82,8 +82,8 @@ namespace voxcgeom
 			void Quaternion::setToRotateIntertialToObject(const EulerAngles &orientation)
 			{
 				// 计算半角的 sin和cos
-				float sp, sb, sh;
-				float cp, cb, ch;
+				VCG_Number sp, sb, sh;
+				VCG_Number cp, cb, ch;
 				SinCos(&sp, &cp, orientation.pitch * 0.5f);
 				SinCos(&sb, &cb, orientation.bank * 0.5f);
 				SinCos(&sh, &ch, orientation.heading * 0.5f);
@@ -115,7 +115,7 @@ namespace voxcgeom
 			// 正则化 Quaternion
 			void Quaternion::normalize()
 			{
-				float mag = sqrt(w * w + x*x + y*y + z*z);
+				VCG_Number mag = sqrt(w * w + x*x + y*y + z*z);
 				// 防止除0
 				if (mag > 0.0f)
 				{
@@ -133,17 +133,17 @@ namespace voxcgeom
 				}
 			}
 			// 得到旋转角
-			float Quaternion::getRotationAngle() const
+			VCG_Number Quaternion::getRotationAngle() const
 			{
 				// 计算半角,w = cos(theta / 2);
-				float thetaOver2 = SafeACos(w);
+				VCG_Number thetaOver2 = SafeACos(w);
 				return thetaOver2 * 2.0f;
 			}
 			// 提取旋转轴
 			Vec3D Quaternion::getTotationAxis() const
 			{
 				// 计算sin^2(theta/2)
-				float sinThetaOver2Sq = 1.0f - w*w;
+				VCG_Number sinThetaOver2Sq = 1.0f - w*w;
 				// 注意保证数值精度
 				if (sinThetaOver2Sq <= 0.0f)
 				{
@@ -151,7 +151,7 @@ namespace voxcgeom
 					return Vec3D(1.0f,0.0f,0.0f);
 				}
 				// 计算 1/sin(theta/2);
-				float oneOverSinThetaOver2 = 1.0f / sqrt(sinThetaOver2Sq);
+				VCG_Number oneOverSinThetaOver2 = 1.0f / sqrt(sinThetaOver2Sq);
 				//
 				return Vec3D(
 						x * oneOverSinThetaOver2,
@@ -160,7 +160,7 @@ namespace voxcgeom
 						);
 			}
 			// Quaternion 点乘
-			float dotProduct(const Quaternion &p, const Quaternion &q)
+			VCG_Number dotProduct(const Quaternion &p, const Quaternion &q)
 			{
 				return p.w * q.w + p.x * q.x + p.y * q.y + p.z * q.z;
 			}
@@ -171,9 +171,9 @@ namespace voxcgeom
 				if (t <= 0.0f) return q1;
 				//
 				// 点乘计算四元数夹角的cos值
-				float cosOmega = dotProduct(q0, q1);
+				VCG_Number cosOmega = dotProduct(q0, q1);
 				// 如果点乘为负, 使用-q1
-				float q1w = q1.w, q1x = q1.x, q1y = q1.y, q1z = q1.z;
+				VCG_Number q1w = q1.w, q1x = q1.x, q1y = q1.y, q1z = q1.z;
 				if (cosOmega < 0.0f)
 				{
 					q1w = -q1w; q1x = -q1x; q1y = -q1y; q1z = -q1z;
@@ -182,7 +182,7 @@ namespace voxcgeom
 				// 两个单位四元数点乘的结果应该 <= 1.0f;
 				assert(cosOmega < 1.1f);
 				// 计算插值片，注意非常接近的情况
-				float k0, k1;
+				VCG_Number k0, k1;
 				if (cosOmega > 0.9999f)
 				{
 					// 非常接近，即线性插值，防止除0

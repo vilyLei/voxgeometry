@@ -22,7 +22,13 @@ Author: Vily
 #define VCG_MATH_SQRT2							1.41421356237309504880					// sqrt(2)
 #define VCG_MATH_1_OVER_SQRT2					0.70710678118654752440					// 1/sqrt(2)
 
-typedef float									VCG_Number;
+#ifdef WASM_DEV_ENV
+typedef double									VCG_Number;
+#else
+typedef double									VCG_Number;
+#endif
+const size_t									VCG_Number_SIZE = sizeof(VCG_Number);
+const size_t									VCG_MATRIX4_DATA_SIZE = VCG_Number_SIZE * 16;
 const VCG_Number								VCG_MATH_MIN_POSITIVE = 1e-7f;
 const VCG_Number								VCG_MATH_MAX_POSITIVE = 3.4e20f;
 const VCG_Number								VCG_MATH_MIN_NEGATIVE = -3.4e20f;

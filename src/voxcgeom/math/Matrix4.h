@@ -25,12 +25,12 @@ namespace voxcgeom
 		{
 		private:
 			static int s_uid;
-			static VCG_Number s_initData[16];
+			const static VCG_Number s_initData[16];
 			static Matrix4 s_tmat4;
-			int m_uid;// = -1;
-			int m_index;// = 0;
-			VCG_Number* m_fs32;// = null;
-			VCG_Number* m_localFS32;// = null;
+			int m_uid;
+			int m_index;
+			VCG_Number* m_fs32;
+			VCG_Number* m_localFS32;
 
 			void getAxisRotation(VCG_Number x, VCG_Number y, VCG_Number z, VCG_Number radian);
 		public:
