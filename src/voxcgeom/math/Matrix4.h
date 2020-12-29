@@ -72,6 +72,7 @@ namespace voxcgeom
 			void copyColumnFrom(unsigned int column_index, const Vec3D& v3);
 			void copyColumnTo(unsigned int column_index, Vec3D& v3);
 			void setF32ArrAndIndex(VCG_Number* fs32Arr, unsigned int index = 0);
+			void setF32ArrIndex(unsigned int index);
 			void setF32Arr(VCG_Number* fs32Arr);
 			void copyFromF32Arr(VCG_Number* fs32Arr, unsigned int index = 0);
 			void copyToF32Arr(VCG_Number* fs32Arr, unsigned int index = 0);

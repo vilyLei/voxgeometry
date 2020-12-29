@@ -1,10 +1,15 @@
 console.log("wasm test init...");
 
+import * as MatComputerDemoT from "./app/MatComputerDemo";
 
+import MatComputerDemo = MatComputerDemoT.app.MatComputerDemo;
+
+let demoIns:MatComputerDemo = new MatComputerDemo();
 class WasmCore
 {
     static Module:any = null;
 }
+/*
 class AppDemo
 {
     constructor()
@@ -13,24 +18,26 @@ class AppDemo
     initialize():void
     {
         //getTestBytes,showVersion
-        WasmCore.Module.showVersion();
-        let u8arr:any = WasmCore.Module.getTestBytes();
+        let module:any = WasmCore.Module;
+        module.showVersion();
+        let u8arr:any = module.getTestBytes();
         console.log("A u8arr, ",u8arr);
         u8arr[0] = 13;
-        u8arr = WasmCore.Module.getTestBytes();
+        u8arr = module.getTestBytes();
         console.log("B u8arr, ",u8arr);
-        let value:number = WasmCore.Module.getSumBytes();
+        let value:number = module.getSumBytes();
         console.log("value, ",value);
         function funvscall(vs:any)
         {
             console.log("funvscall,vs: ",vs);
         }
-        WasmCore.Module.callWithMemoryView(funvscall);
+        module.callWithMemoryView(funvscall);
         let pvs:Uint16Array = new Uint16Array([32,12,56,887]);
-        value = WasmCore.Module.emval_test_sum(pvs);
+        value = module.emval_test_sum(pvs);
         //
         console.log("emval_test_sum,value: "+value);
-        let ClassModule:any = WasmCore.Module;
+        module.testMathDemo();
+        let ClassModule:any = module;
         let pclass = ClassModule.DemoMain;
         if(pclass != null)
         {
@@ -56,15 +63,15 @@ class AppDemo
     }
     run():void
     {
-
     }
 }
 //0049f86d2f30ce3d108686631728b2b868e3f97a
 let demoIns:AppDemo = new AppDemo();
+*/
 function main():void
 {
     console.log("---- demo --- init --");
-    demoIns.initialize();
+    demoIns.initialize( WasmCore.Module );
     function mainLoop(now:any):void
     {
         demoIns.run();
@@ -83,15 +90,15 @@ class WasmLoader
     private moduleLoaded(pmodule:any):void
     {
         console.log("WasmLoader::moduleLoaded(), wasm compile ok, pmodule: ",pmodule);
-        this.wasmModule = pmodule;//pwindow["Module"];
+        this.wasmModule = pmodule;
         WasmCore.Module = this.wasmModule;
-        pmodule.showVersion();
         main();
     }
     initWasm():void
     {
         let pwindow:any = window;
-        let path:string = "wasm/demomain.js";
+        //let path:string = "wasm/demomain.js";
+        let path:string = "wasm/matDemo.js";
         let decoder_script:any = document.getElementById("wasm_script");
         if (decoder_script !== null)
         {
@@ -128,25 +135,3 @@ class WasmLoader
 
 let wloader:WasmLoader = new WasmLoader();
 wloader.initWasm();
-/*
-
-function initRuntime() {
-    checkStackCookie();
-    assert(!runtimeInitialized);
-    runtimeInitialized = true;
-    if (!Module["noFSInit"] && !FS.init.initialized)
-    {
-        FS.init();
-    }
-    TTY.init();
-    callRuntimeCallbacks(__ATINIT__);
-    if(Module != null)
-    {
-        console.log("WASM initRuntime...");
-        if(typeof Module["onModuleLoaded"]==="function")
-        {
-            Module["onModuleLoaded"](Module);
-        }
-    }
-}
-*/

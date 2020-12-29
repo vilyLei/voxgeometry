@@ -96,7 +96,29 @@ void testMatrix4()
 }
 void testMathDemo()
 {
+    Matrix4 mat4A;
+    mat4A.identity();
+    mat4A.setScaleXYZ(10.0f, 4.5f, 2.1f);
+    mat4A.setRotationEulerAngle(30.0f, 20.0f, 80.0f);
+    mat4A.setTranslationXYZ(30.0f, 20.0f, 80.0f);
+    mat4A.coutThis();
+    unsigned int index = 0;
+
     MatrixComputer matCompter;
+    matCompter.allocate(16);
+    matCompter.setScaleXYZParamAt(10.0f, 4.5f, 2.1f, index);
+    matCompter.setRotationEulerAngleParamAt(30.0f, 20.0f, 80.0f, index);
+    matCompter.setTranslationXYZParamAt(30.0f, 20.0f, 80.0f, index);
+    index++;
+    matCompter.setScaleXYZParamAt(10.0f, 4.5f, 2.1f, index);
+    matCompter.setRotationEulerAngleParamAt(30.0f, 20.0f, 80.0f, index);
+    matCompter.setTranslationXYZParamAt(30.0f, 20.0f, 80.0f, index);
+
+    matCompter.calc(2);
+    //matCompter.identityAt(0);
+    std::cout << "----------- ------ ----------------- ----" << std::endl;
+    matCompter.coutThisMatAt(0);
+    matCompter.coutThisMatAt(1);
     matCompter.coutThis();
 
 }

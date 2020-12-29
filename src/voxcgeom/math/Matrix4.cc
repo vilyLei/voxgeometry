@@ -405,7 +405,13 @@ namespace voxcgeom
 			{
 				m_fs32 = fs32Arr;
 				m_index = index;
+				m_localFS32 = m_fs32 + index;
 			}
+		}
+		void Matrix4::setF32ArrIndex(unsigned int index)
+		{
+			m_index = index;
+			m_localFS32 = m_fs32 + index;
 		}
 		void Matrix4::setF32Arr(VCG_Number* fs32Arr)
 		{
