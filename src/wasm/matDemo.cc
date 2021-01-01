@@ -45,6 +45,7 @@ em++ --bind -o ../../public/wasm/demomain.js ../voxcgeom/cgeomPre.cc ../voxcgeom
 em++ --bind -o ../../public/wasm/demomain.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc CarDemo.cc demomain.cc -std=c++11
 em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc CarDemo.cc matDemo.cc -std=c++11
 em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc matDemo.cc -std=c++11 -D WASM_DEV_ENV
+em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc matDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
 */
 #include <iostream>
@@ -216,6 +217,7 @@ EMSCRIPTEN_BINDINGS(pmodule)
     .function("setRotationEulerAngleParamAt", &MatrixComputer::setRotationEulerAngleParamAt)
     .function("setTranslationXYZParamAt", &MatrixComputer::setTranslationXYZParamAt)
     .function("identityAt", &MatrixComputer::identityAt)
+    .function("calcMotion", &MatrixComputer::calcMotion)
     .function("calc", &MatrixComputer::calc)
     .function("coutThisMatAt", &MatrixComputer::coutThisMatAt)
     .function("coutThis", &MatrixComputer::coutThis)

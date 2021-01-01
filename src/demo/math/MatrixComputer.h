@@ -48,6 +48,7 @@ namespace demo
 			void setRotationEulerAngleAt(VCG_Number prx, VCG_Number pry, VCG_Number prz, unsigned int index);
 			void setTranslationXYZAt(VCG_Number px, VCG_Number py, VCG_Number pz, unsigned int index);
 			void copyFromMatrixAt(const Matrix4& mat4, unsigned int index);
+			void calcMotion(VCG_Number cx, VCG_Number cz, VCG_Number time, VCG_Number radius, VCG_Number size, unsigned int total);
 			void calc(unsigned int total);
 			void coutThisMatAt(unsigned int index);
 			void coutThis();

@@ -124,26 +124,46 @@ namespace demo
 			size_t i = static_cast<size_t>(index) * 16;
 			std::memcpy(m_matrixData + i, mat4.getLocalFS32(), VCG_MATRIX4_DATA_SIZE);
 		}
+
+		void MatrixComputer::calcMotion(VCG_Number cx, VCG_Number cz, VCG_Number time, VCG_Number radius, VCG_Number size, unsigned int total)
+		{
+			if (m_total > 0 && total <= m_total)
+			{
+				VCG_Number px;
+				VCG_Number py;
+				VCG_Number pz;
+				unsigned int i = 0;
+				unsigned int k = 0;
+				auto pvs = m_paramData;
+				radius = 1.0f / radius;
+				for (; i < total; ++i)
+				{
+					k = i * 9 + 6;
+					px = pvs[k] - cx;
+					py = pvs[k + 1];
+					pz = pvs[k + 2] - cz;
+					px = sin(time + std::sqrt(px * px + pz * pz) * radius);
+					pvs[k + 1] = py + (size  * px);
+				}
+			}
+		}
 		void MatrixComputer::calc(unsigned int total)
 		{
-			if (total > 0 && m_total > 0 && total <= m_total)
+			if (m_total > 0 && total <= m_total)
 			{
 				unsigned int i = 0;
-				unsigned int j = 0;
 				unsigned int k = 0;
 				auto pvs = m_paramData;
 				auto& mat4 = *m_mat4;
 				for (; i < total; ++i)
 				{
-					j = i * 16;
-					mat4.setF32ArrIndex(j);
+					mat4.setF32ArrIndex(i * 16);
 					//std::cout << "---- ---- ----" << std::endl;
 					//mat4.coutThis();
 					mat4.setScaleXYZ(pvs[k], pvs[k+1], pvs[k+2]);
 					mat4.setRotationEulerAngle(pvs[k+3] * VCG_MATH_PI_OVER_180, pvs[k+4] * VCG_MATH_PI_OVER_180, pvs[k+5] * VCG_MATH_PI_OVER_180);
 					mat4.setTranslationXYZ(pvs[k+6], pvs[k+7], pvs[k+8]);
 					//mat4.coutThis();
-					mat4.copyToF32Arr(m_matrixData, j);
 					k += 9;
 				}
 			}
@@ -165,10 +185,16 @@ namespace demo
 		{
 			if (m_matrixData != nullptr)
 			{
+				m_total = 0;
 				delete[] m_matrixData;
 				delete[] m_paramData;
 				delete[] m_iData;
+				m_matrixData = nullptr;
 				m_paramData = nullptr;
+				m_iData = nullptr;
+
+				delete m_mat4;
+				m_mat4 = nullptr;
 			}
 		}
 
