@@ -103,7 +103,7 @@ void testMathDemo()
     mat4A.setTranslationXYZ(30.0f, 20.0f, 80.0f);
     mat4A.coutThis();
     unsigned int index = 0;
-
+    ///*
     MatrixComputer matCompter;
     matCompter.allocate(16);
     matCompter.setScaleXYZParamAt(10.0f, 4.5f, 2.1f, index);
@@ -120,7 +120,7 @@ void testMathDemo()
     matCompter.coutThisMatAt(0);
     matCompter.coutThisMatAt(1);
     matCompter.coutThis();
-
+    //*/
 }
 int main (int argc, char *argv[])
 {

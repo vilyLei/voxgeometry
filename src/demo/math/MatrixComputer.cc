@@ -2,9 +2,6 @@
 
 #include "MatrixComputer.h"
 
-//	#ifdef WASM_DEV_ENV
-//	using namespace emscripten;
-//	#endif // WASM_DEV_ENV
 namespace demo
 {
 	namespace math
@@ -43,7 +40,6 @@ namespace demo
 				for (size_t i = 0; i < size; ++i)
 				{
 					std::memcpy(m_matrixData + i * 16, &s_initMatData, VCG_MATRIX4_DATA_SIZE);
-					//m_iData[i] = 0;
 				}
 			}
 		}
@@ -158,7 +154,6 @@ namespace demo
 				for (; i < total; ++i)
 				{
 					mat4.setF32ArrIndex(i * 16);
-					//std::cout << "---- ---- ----" << std::endl;
 					//mat4.coutThis();
 					mat4.setScaleXYZ(pvs[k], pvs[k+1], pvs[k+2]);
 					mat4.setRotationEulerAngle(pvs[k+3] * VCG_MATH_PI_OVER_180, pvs[k+4] * VCG_MATH_PI_OVER_180, pvs[k+5] * VCG_MATH_PI_OVER_180);

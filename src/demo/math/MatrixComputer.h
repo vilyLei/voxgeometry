@@ -9,9 +9,7 @@ Author: Vily
 #include "../../voxcgeom/math/Matrix4.h"
 #ifdef WASM_DEV_ENV
 #include <emscripten.h>
-//#include <emscripten/bind.h>
 #include <emscripten/val.h>
-//using namespace emscripten;
 #endif // WASM_DEV_ENV
 
 namespace demo

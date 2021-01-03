@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <cmath>
+#include "assert.h"
 #include "Matrix4.h"
 namespace voxcgeom
 {
@@ -37,15 +38,21 @@ namespace voxcgeom
 			};
 			m_index = 0;
 			m_localFS32 = m_fs32;
+			m_type = 0;
 		}
 		Matrix4::Matrix4(VCG_Number* pfs32, unsigned int index) 
 			: m_uid(s_uid++)
 			, m_index(index)
 			, m_fs32(pfs32)
 		{
+			assert(pfs32 != nullptr);
 			m_localFS32 = pfs32 + index;
+			m_type = 1;
 		}
-
+		Matrix4::~Matrix4()
+		{
+			destroy();
+		}
 
 		unsigned int Matrix4::getCapacity()
 		{
@@ -1065,9 +1072,11 @@ namespace voxcgeom
 		{
 			if (m_localFS32 != nullptr)
 			{
-				delete[] m_fs32;
-				delete[] m_localFS32;
-
+				if (m_type < 1)
+				{
+					delete[] m_fs32;
+				}
+				m_type = -1;
 				m_localFS32 = nullptr;
 				m_fs32 = nullptr;
 				m_index = -1;

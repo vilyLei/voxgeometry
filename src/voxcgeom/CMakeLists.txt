@@ -13,12 +13,14 @@ set(MATH_FILES
     math/EulerAngles.h
     math/Quaternion.h
     math/Matrix4.h
+    math/Matrix4Container.h
     # Source Files
     math/Vec3D.cc
     math/Orientation3D.cc
     math/EulerAngles.cc
     math/Quaternion.cc
     math/Matrix4.cc
+    math/Matrix4Container.cc
     )
 
 set(BASE_FILES

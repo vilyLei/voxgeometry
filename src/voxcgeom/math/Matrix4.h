@@ -29,6 +29,7 @@ namespace voxcgeom
 			static Matrix4 s_tmat4;
 			int m_uid;
 			int m_index;
+			int m_type;
 			VCG_Number* m_fs32;
 			VCG_Number* m_localFS32;
 
@@ -38,6 +39,7 @@ namespace voxcgeom
 
 			Matrix4();
 			Matrix4(VCG_Number *pfs32, unsigned int index);
+			virtual ~Matrix4();
 			unsigned int getCapacity();
 			int getUid();
 			VCG_Number* getLocalFS32() const;
