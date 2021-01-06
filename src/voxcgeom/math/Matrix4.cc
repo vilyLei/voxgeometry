@@ -994,18 +994,33 @@ namespace voxcgeom
 				x * sfs32[3] + y * sfs32[7] + z * sfs32[11] + sfs32[15]
 			);
 		}
-		void Matrix4::transformVectors(VCG_Number* float_vinArr, unsigned int vinLength, VCG_Number* float_voutArr)
+		void Matrix4::transformVectors(VCG_Number* inFS32, unsigned int vinLength, VCG_Number* outFS32)
 		{
-			auto i = 0;
-			auto x = float_vinArr[0], y = float_vinArr[0], z = float_vinArr[0];
+			unsigned int i = 0;
+			auto x = inFS32[0], y = inFS32[0], z = inFS32[0];
 			auto pfs = m_localFS32;
 			while ((i + 3) <= vinLength) {
-				x = float_vinArr[i];
-				y = float_vinArr[i + 1];
-				z = float_vinArr[i + 2];
-				float_voutArr[i] = x * pfs[0] + y * pfs[4] + z * pfs[8] + pfs[12];
-				float_voutArr[i + 1] = x * pfs[1] + y * pfs[5] + z * pfs[9] + pfs[13];
-				float_voutArr[i + 2] = x * pfs[2] + y * pfs[6] + z * pfs[10] + pfs[14];
+				x = inFS32[i];
+				y = inFS32[i + 1];
+				z = inFS32[i + 2];
+				outFS32[i] = x * pfs[0] + y * pfs[4] + z * pfs[8] + pfs[12];
+				outFS32[i + 1] = x * pfs[1] + y * pfs[5] + z * pfs[9] + pfs[13];
+				outFS32[i + 2] = x * pfs[2] + y * pfs[6] + z * pfs[10] + pfs[14];
+				i += 3;
+			}
+		}
+		void Matrix4::transformVectorsSelf(VCG_Number* inFS32, unsigned int vinLength)
+		{
+			unsigned int i = 0;
+			auto x = inFS32[0], y = inFS32[0], z = inFS32[0];
+			auto pfs = m_localFS32;
+			while ((i + 3) <= vinLength) {
+				x = inFS32[i];
+				y = inFS32[i + 1];
+				z = inFS32[i + 2];
+				inFS32[i] = x * pfs[0] + y * pfs[4] + z * pfs[8] + pfs[12];
+				inFS32[i + 1] = x * pfs[1] + y * pfs[5] + z * pfs[9] + pfs[13];
+				inFS32[i + 2] = x * pfs[2] + y * pfs[6] + z * pfs[10] + pfs[14];
 				i += 3;
 			}
 		}

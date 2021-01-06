@@ -21,7 +21,17 @@ include_directories ("${PROJECT_SOURCE_DIR}/demo")
 add_subdirectory (demo)
 set (EXTRA_LIBS ${EXTRA_LIBS} demo)
 
+
+include_directories ("${PROJECT_SOURCE_DIR}/wasm")
+add_subdirectory (wasm)
+set (EXTRA_LIBS ${EXTRA_LIBS} wasm)
+
 # add the executable
 add_executable(voxcgeometry voxcgeom.cc)
 #target_link_libraries (voxcgeometry voxcgeom)
 target_link_libraries (voxcgeometry ${EXTRA_LIBS})
+
+
+# add the executable
+add_executable(voxwasm wasm/transformDemo.cc)
+target_link_libraries (voxwasm ${EXTRA_LIBS})

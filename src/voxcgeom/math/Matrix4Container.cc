@@ -1,10 +1,11 @@
 /**
 Author: Vily
  * matrix container for concurrent compute strategy...
- * 1.父级的matrix变换会影响子类
- * 2.子级的matrix变换不会影响父级
+ * 1.parent matrix does change child transform
+ * 2.child matrix does not change parent transform 
 */
 
+#include <iostream>
 #include "assert.h"
 #include "Matrix4Container.h"
 
@@ -30,7 +31,7 @@ namespace voxcgeom
 
         Matrix4Container::Matrix4Container()
             : version(0)
-            , m_uid(-1)
+            , m_uid(Matrix4Container::s_uid++)
             , m_invMatEnabled(false)
             , m_updatedStatus(1)
             , m_updateStatus(Matrix4Container::UPDATE_TRANSFORM)
@@ -45,7 +46,7 @@ namespace voxcgeom
         }
         Matrix4Container::Matrix4Container(Matrix4* mat)
             : version(0)
-            , m_uid(-1)
+            , m_uid(Matrix4Container::s_uid++)
             , m_invMatEnabled(false)
             , m_updatedStatus(1)
             , m_updateStatus(Matrix4Container::UPDATE_TRANSFORM)
@@ -60,7 +61,8 @@ namespace voxcgeom
         }
         Matrix4Container::~Matrix4Container()
         {
-
+            std::cout << "Matrix4Container::deconstructor()..." << std::endl;
+            destroy();
         }
         void Matrix4Container::addChild(Matrix4Container *child)
         {
@@ -70,6 +72,26 @@ namespace voxcgeom
                 child->setParentMatrix(getMatrix());
                 m_childList.push_back(child);
                 m_childListLen++;
+            }
+        }
+        void Matrix4Container::removeChild(Matrix4Container* child)
+        {
+            if (child != nullptr && child->m_parent == this)
+            {
+                //std::vector<int>::iterator it = vector.begin();
+                auto it = m_childList.begin();
+                auto end = m_childList.end();
+
+                for (; it != end; ++it)
+                {
+                    if (*it == child)
+                    {
+                        m_childList.erase(it);
+                        m_childListLen--;
+                        //  std::cout << "find a child, and remove it." <<", m_childListLen: "<< m_childListLen << std::endl;
+                        break;
+                    }
+                }
             }
         }
         int Matrix4Container::getUid(){ return m_uid; }
@@ -205,7 +227,7 @@ namespace voxcgeom
             }
             mat.copyFrom(*m_omat);
         }
-        // local to world matrix, 使用的时候注意数据安全->防止多个显示对象拥有而出现多次修改的问题,因此此函数尽量不要用
+        // local to world matrix
         void Matrix4Container::setParentMatrix(Matrix4 *matrix)
         {
             if (matrix != nullptr)
@@ -234,7 +256,7 @@ namespace voxcgeom
         }
         void Matrix4Container::destroy()
         {
-            if (m_fs32 != nullptr)
+            if (m_omat != nullptr)
             {
                 if (m_childListLen > 0)
                 {
@@ -259,37 +281,48 @@ namespace voxcgeom
 
             }
         }
-        void Matrix4Container::update()
+
+        void Matrix4Container::updateLocal()
         {
-            //trace("Matrix4Container::update(), m_updateStatus: "+m_updateStatus);
             if (m_updateStatus > 0)
             {
-                if (m_parentMat != nullptr)
+                if ((m_updateStatus & Matrix4Container::UPDATE_TRANSFORM) > 0)
                 {
-                    if (m_updateStatus != Matrix4Container::UPDATE_PARENT_MAT)
-                    {
-                        std::memcpy(m_localMat->getLocalFS32(), &m_fs32, VCG_MATRIX4_DATA_SIZE);
-                        if ((m_updatedStatus & Matrix4Container::UPDATE_ROTATION) == Matrix4Container::UPDATE_ROTATION)
-                        {
-                            m_localMat->setRotationEulerAngle(m_fs32[1] * VCG_MATH_PI_OVER_180, m_fs32[6] * VCG_MATH_PI_OVER_180, m_fs32[9] * VCG_MATH_PI_OVER_180);
-                        }
-                    }
-                    m_omat->copyFrom(*m_localMat);
-                    m_omat->append(*m_parentMat);
-                }
-                else
-                {
-                    std::memcpy(m_localMat->getLocalFS32(), &m_fs32, VCG_MATRIX4_DATA_SIZE);
+                    m_localMat->copyFromF32Arr(m_fs32, 0);
                     if ((m_updatedStatus & Matrix4Container::UPDATE_ROTATION) == Matrix4Container::UPDATE_ROTATION)
                     {
                         m_localMat->setRotationEulerAngle(m_fs32[1] * VCG_MATH_PI_OVER_180, m_fs32[6] * VCG_MATH_PI_OVER_180, m_fs32[9] * VCG_MATH_PI_OVER_180);
                     }
                 }
-                version++;
+                if (m_omat != m_localMat)
+                {
+                    m_omat->copyFrom(*m_localMat);
+                }
                 m_updateStatus = 0;
-                m_invMatEnabled = true;
+            }
+        }
+        void Matrix4Container::update()
+        {
+            if (m_updateStatus > 0)
+            {
+                if ((m_updateStatus & Matrix4Container::UPDATE_TRANSFORM) > 0)
+                {
+                    m_localMat->copyFromF32Arr(m_fs32, 0);
+                    if ((m_updatedStatus & Matrix4Container::UPDATE_ROTATION) == Matrix4Container::UPDATE_ROTATION)
+                    {
+                        m_localMat->setRotationEulerAngle(m_fs32[1] * VCG_MATH_PI_OVER_180, m_fs32[6] * VCG_MATH_PI_OVER_180, m_fs32[9] * VCG_MATH_PI_OVER_180);
+                    }
+                }
+                if (m_omat != m_localMat)
+                {
+                    m_omat->copyFrom(*m_localMat);
+                }
+                if ((m_updateStatus & Matrix4Container::UPDATE_PARENT_MAT) == Matrix4Container::UPDATE_PARENT_MAT)
+                {
+                    m_omat->append(*m_parentMat);
+                }
+                m_updateStatus = 0;
 
-                // 子集需要做相应变换
                 if (m_childListLen > 0)
                 {
                     for (size_t i = 0; i < m_childListLen; i++)
@@ -301,7 +334,6 @@ namespace voxcgeom
             }
             else
             {
-                // 子集需要做相应变换
                 if (m_childListLen > 0)
                 {
                     for (size_t i = 0; i < m_childListLen; i++)
@@ -310,7 +342,6 @@ namespace voxcgeom
                     }
                 }
             }
-
         }
 
     }

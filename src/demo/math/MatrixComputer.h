@@ -55,10 +55,10 @@ namespace demo
 			static VCG_Number	s_initMatData[16];
 			bool				m_initBoo;
 			unsigned int		m_total;
-			VCG_Number*			m_matrixData;
-			VCG_Number*			m_paramData;
-			unsigned short*		m_iData;
-			Matrix4*			m_mat4;
+			VCG_Number			*m_matrixData;
+			VCG_Number			*m_paramData;
+			unsigned short		*m_iData;
+			Matrix4				*m_mat4;
 		};
 	}
 }

@@ -114,7 +114,8 @@ namespace voxcgeom
 			void transformOutVector3(const Vec3D& v3, Vec3D& out_v3);
 			void transformVector3Self(Vec3D& v3);
 			void transformVectorSelf(Vec3D& v3);
-			void transformVectors(VCG_Number* float_vinArr, unsigned int vinLength, VCG_Number* float_voutArr);
+			void transformVectors(VCG_Number* inFS32, unsigned int vinLength, VCG_Number* outFS32);
+			void transformVectorsSelf(VCG_Number* inFS32, unsigned int vinLength);
 			void transpose();
 
 			void interpolateTo(Matrix4& toMat, VCG_Number float_percent);

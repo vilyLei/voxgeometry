@@ -9,7 +9,7 @@ namespace voxcgeom
 {
 	namespace math
 	{
-			inline float vector3Mag(const Vec3D& a)
+			inline VCG_Number vector3Mag(const Vec3D& a)
 			{
 				return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
 			}
@@ -165,7 +165,7 @@ namespace voxcgeom
 				return p.w * q.w + p.x * q.x + p.y * q.y + p.z * q.z;
 			}
 			// slerp 线性插值
-			Quaternion slerp(const Quaternion &q0, const Quaternion &q1,float t)
+			Quaternion slerp(const Quaternion &q0, const Quaternion &q1, VCG_Number t)
 			{
 				if (t <= 0.0f) return q0;
 				if (t <= 0.0f) return q1;
@@ -191,10 +191,10 @@ namespace voxcgeom
 				}
 				else
 				{
-					float sinOmega = sqrt(1.0f - cosOmega * cosOmega);
+					VCG_Number sinOmega = sqrt(1.0f - cosOmega * cosOmega);
 					// 计算角度
-					float omega = atan2(sinOmega, cosOmega);
-					float oneOverSinOmega = 1.0f / sinOmega;
+					VCG_Number omega = atan2(sinOmega, cosOmega);
+					VCG_Number oneOverSinOmega = 1.0f / sinOmega;
 					// 计算插值变量
 					k0 = sin((1.0f - t) * omega) * oneOverSinOmega;
 					k1 = sin(t * omega) * oneOverSinOmega;
@@ -226,14 +226,14 @@ namespace voxcgeom
 					return q;
 				}
 				// 提取半角alpha值,alpha = theta/2
-				float alpha = acos(q.w);
+				VCG_Number alpha = acos(q.w);
 				// 计算新的 alpha值
-				float newAlpha = alpha * exponent;
+				VCG_Number newAlpha = alpha * exponent;
 				// 计算新的w
 				Quaternion r;
 				r.w = cos(newAlpha);
 				//
-				float mult = sin(newAlpha) / sin(alpha);
+				VCG_Number mult = sin(newAlpha) / sin(alpha);
 				r.x = q.x * mult;
 				r.y = q.y * mult;
 				r.z = q.z * mult;

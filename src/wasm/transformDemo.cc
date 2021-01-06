@@ -1,0 +1,154 @@
+/**
+
+em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc matDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
+
+
+em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
+
+em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../voxcgeom/math/Matrix4Container.cc ../demo/math/MatrixComputer.cc ./app/trans/MatTransform.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
+
+*/
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include "../voxcgeom/cgeomPre.h"
+#include "../voxcgeom/math/Vec3D.h"
+#include "../voxcgeom/math/Matrix4.h"
+#include "../demo/math/MatrixComputer.h"
+#include "../wasm/app/trans/MatTransform.h"
+
+#ifdef WASM_DEV_ENV
+#include <emscripten.h>
+#include <emscripten/bind.h>
+#include <emscripten/val.h>
+using namespace emscripten;
+#endif
+
+void showVersion()
+{
+    int setprecisionSize = 6;
+    std::cout << std::setiosflags(std::ios::fixed);
+    std::cout << std::setprecision(setprecisionSize) << "showVersion" << std::endl;
+    std::cout<<"em++ demomain bindings version 1.0.1!\n";
+    std::cout<<"VCG_MATH_E: "<< VCG_MATH_E <<"\n";
+    VCG_Number pnumber = 10.012;
+    std::cout<<"VCG_Number pnumber: "<< pnumber <<"\n";
+
+    Vec3D vec3a(1.0f,2.1f,3.3f);
+    Vec3D vec3b(1.0f,-2.1f,3.3f);
+    Vec3D vec3c;
+    vec3a.coutThis();
+    Vec3D::Cross(vec3a, vec3b, vec3c);
+    vec3c.coutThis();
+    vec3c.normalize();
+    vec3c.coutThis();
+
+    std::cout<<"SafeACos(0.5f): "<<SafeACos(0.5f)<<std::endl;
+    #ifndef WASM_DEV_ENV
+    std::cout<<"WASM DEF NO..."<<std::endl;
+    #else
+    std::cout<<"WASM DEF YES..."<<std::endl;
+    #endif
+
+    Matrix4 mat4A;
+    mat4A.identity();
+    mat4A.setScaleXYZ(10.0f,4.5f,2.1f);
+    mat4A.setRotationEulerAngle(30.0f,20.0f,80.0f);
+    mat4A.setTranslationXYZ(30.0f,20.0f,80.0f);
+    mat4A.coutThis();
+}
+float getVersion()
+{
+    return 1.02f;
+}
+
+/*
+template<typename T, size_t sizeOfArray>
+constexpr size_t getElementCount(T (&)[sizeOfArray])
+{
+    return sizeOfArray;
+}
+// callback
+static void callWithMemoryView(val v)
+{
+    // static so the JS test can read the memory after callTakeMemoryView runs
+    static unsigned char data[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    v(typed_memory_view(getElementCount(data), data));
+    static float f[] = { 1.5f, 2.5f, 3.5f, 4.5f };
+    v(typed_memory_view(getElementCount(f), f));
+    static short s[] = { 1000, 100, 10, 1 };
+    v(typed_memory_view(getElementCount(s), s));
+}
+*/
+
+void testMathDemo()
+{
+    Matrix4 mat4A;
+    mat4A.identity();
+    mat4A.setScaleXYZ(10.0f, 4.5f, 2.1f);
+    mat4A.setRotationEulerAngle(30.0f, 20.0f, 80.0f);
+    mat4A.setTranslationXYZ(30.0f, 20.0f, 80.0f);
+    mat4A.coutThis();
+    unsigned int index = 0;
+
+    MatrixComputer matCompter;
+    matCompter.allocate(16);
+    matCompter.setScaleXYZParamAt(10.0f, 4.5f, 2.1f, index);
+    matCompter.setRotationEulerAngleParamAt(30.0f, 20.0f, 80.0f, index);
+    matCompter.setTranslationXYZParamAt(30.0f, 20.0f, 80.0f, index);
+    matCompter.calc(1);
+    //matCompter.identityAt(0);
+    matCompter.coutThisMatAt(0);
+    matCompter.coutThis();
+}
+#ifdef WASM_DEV_ENV
+EMSCRIPTEN_BINDINGS(pmodule)
+{
+    function("showVersion", &showVersion);
+    function("testMathDemo", &testMathDemo);
+
+    class_<MatrixComputer>("MatrixComputer")
+    .constructor()
+    .function("allocate", &MatrixComputer::allocate)
+    .function("getMatData", &MatrixComputer::getMatData)
+    .function("getParamData", &MatrixComputer::getParamData)
+    .function("getIData", &MatrixComputer::getIData)
+    .function("setScaleXYZParamAt", &MatrixComputer::setScaleXYZParamAt)
+    .function("setRotationEulerAngleParamAt", &MatrixComputer::setRotationEulerAngleParamAt)
+    .function("setTranslationXYZParamAt", &MatrixComputer::setTranslationXYZParamAt)
+    .function("identityAt", &MatrixComputer::identityAt)
+    .function("calcMotion", &MatrixComputer::calcMotion)
+    .function("calc", &MatrixComputer::calc)
+    .function("coutThisMatAt", &MatrixComputer::coutThisMatAt)
+    .function("coutThis", &MatrixComputer::coutThis)
+    ;
+
+
+    class_<MatTransform>("MatTransform")
+        .constructor()
+        .function("allocate", &MatTransform::allocate)
+        .function("getMatData", &MatTransform::getMatData)
+        .function("getParamData", &MatTransform::getParamData)
+        .function("updateParam", &MatTransform::updateParam)
+        .function("identityAt", &MatTransform::identityAt)
+        .function("calc", &MatTransform::calc)
+        .function("coutThisMatAt", &MatTransform::coutThisMatAt)
+        ;
+    
+}
+#else
+
+void transformDemoMain()
+{
+    std::cout << "transformDemoMain..." << std::endl;
+}
+int main(int argc, char* argv[])
+{
+    std::cout << "transformDemo main run()..." << std::endl;
+    MatTransform mtf0;
+    mtf0.allocate(1);
+    mtf0.calc();
+    return 0;
+}
+
+#endif
