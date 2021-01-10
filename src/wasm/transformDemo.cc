@@ -127,9 +127,11 @@ EMSCRIPTEN_BINDINGS(pmodule)
     class_<MatTransform>("MatTransform")
         .constructor()
         .function("allocate", &MatTransform::allocate)
+        .function("allocate2", &MatTransform::allocate2)
         .function("getMatData", &MatTransform::getMatData)
         .function("getParamData", &MatTransform::getParamData)
         .function("updateParam", &MatTransform::updateParam)
+        .function("updateParam2", &MatTransform::updateParam2)
         .function("identityAt", &MatTransform::identityAt)
         .function("calc", &MatTransform::calc)
         .function("coutThisMatAt", &MatTransform::coutThisMatAt)
@@ -146,8 +148,16 @@ int main(int argc, char* argv[])
 {
     std::cout << "transformDemo main run()..." << std::endl;
     MatTransform mtf0;
-    mtf0.allocate(1);
+    //mtf0.allocate(1);
+    mtf0.allocate2(1);
+    VCG_Number* paramvs = mtf0.getParamData();
+    paramvs[0] = 1001.0f; paramvs[1] = 0.0f; paramvs[2] = 2001.0f;
+    paramvs[3] = 80.0f; paramvs[4] = -30.0f; paramvs[5] = 100.0f;
+    paramvs[6] = 0.1f; paramvs[7] = 0.2f; paramvs[8] = 1.0f;
+    mtf0.updateParam2();
     mtf0.calc();
+    mtf0.coutThisMatAt(0);
+    mtf0.coutThisMatAt(1);
     return 0;
 }
 

@@ -312,6 +312,11 @@ namespace voxcgeom
                     {
                         m_localMat->setRotationEulerAngle(m_fs32[1] * VCG_MATH_PI_OVER_180, m_fs32[6] * VCG_MATH_PI_OVER_180, m_fs32[9] * VCG_MATH_PI_OVER_180);
                     }
+
+                    if (m_parentMat != nullptr)
+                    {
+                        m_updateStatus |= Matrix4Container::UPDATE_PARENT_MAT;
+                    }
                 }
                 if (m_omat != m_localMat)
                 {
@@ -325,6 +330,7 @@ namespace voxcgeom
 
                 if (m_childListLen > 0)
                 {
+                    //std::cout << "m_childListLen: " << m_childListLen <<",uid: "<< getUid()<< std::endl;
                     for (size_t i = 0; i < m_childListLen; i++)
                     {
                         m_childList[i]->setParentMatrix(m_omat);

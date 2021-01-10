@@ -6,11 +6,17 @@ namespace app
 {
 	namespace trans
 	{
+		AbsTar::AbsTar()
+			: body(nullptr)
+		{
+		}
+		/// <summary>
+		/// ///////////////////////////////
+		/// </summary>
 		MatTransTar::MatTransTar()
 			: body_ry(0.0f)
 			, tar0_ry(0.0f)
 			, tar1_ry(0.0f)
-			, body(nullptr)
 			, part0(nullptr)
 			, part1(nullptr)
 			, tar0(nullptr)
@@ -19,6 +25,7 @@ namespace app
 		}
 		MatTransTar::~MatTransTar()
 		{
+			destroy();
 		}
 
 		void MatTransTar::update()
@@ -38,18 +45,67 @@ namespace app
 
 		void MatTransTar::destroy()
 		{
-			delete body;
-			body = nullptr;
-			delete part0;
-			part0 = nullptr;
-			delete part1;
-			part1 = nullptr;
-
-			delete tar0;
-			tar0 = nullptr;
-			delete tar1;
-			tar1 = nullptr;
+			if (body != nullptr)
+			{
+				body->destroy();
+				delete body;
+				delete part0;
+				delete part1;
+				delete tar0;
+				delete tar1;
+				body = nullptr;
+				part0 = nullptr;
+				part1 = nullptr;
+				tar0 = nullptr;
+				tar1 = nullptr;
+			}
 		}
+		/// <summary>
+		/// ////////////////////////////////
+		/// </summary>
+
+		MatTransCar::MatTransCar()
+			: zr(0.0f)
+			, zrSpd(0.1f)
+			, part0(nullptr)
+			, part1(nullptr)
+			, tar0(nullptr)
+			, tar1(nullptr)
+			, tar2(nullptr)
+			, tar3(nullptr)
+		{
+		}
+		MatTransCar::~MatTransCar()
+		{
+			destroy();
+		}
+
+		void MatTransCar::update()
+		{
+			part0->setRotationZ(zr);
+			part1->setRotationZ(zr);
+			zr += zrSpd;
+			body->update();
+		}
+
+		void MatTransCar::destroy()
+		{
+			if (body != nullptr)
+			{
+				body->destroy();
+				delete body;
+				delete part0;
+				delete part1;
+				delete tar0;
+				delete tar1;
+				body = nullptr;
+				part0 = nullptr;
+				part1 = nullptr;
+				tar0 = nullptr;
+				tar1 = nullptr;
+			}
+		}
+		
 
         /// ///////////////////////////////////////////////////////////	///
 		
@@ -63,6 +119,8 @@ namespace app
             : m_initBoo(true)
             , m_total(0)
 			, m_index(0)
+			, m_matrixDataTotal(0)
+			, m_paramDataTotal(0)
             , m_matrixData(nullptr)
             , m_paramData(nullptr)
 			, m_matContainer(nullptr)
@@ -82,7 +140,7 @@ namespace app
 						(*it)->destroy();
 						//(*it) = nullptr;
 					}
-					std::vector<MatTransTar*>().swap(m_tars);
+					std::vector<AbsTar*>().swap(m_tars);
 					m_tarsLen = 0;
 				}
 				delete[] m_matrixData;
@@ -102,18 +160,49 @@ namespace app
 				m_initBoo = false;
 				m_total = total;
 				size_t size = static_cast<size_t>(total);
-				m_matrixData = new VCG_Number[size * 32];
+				m_matrixDataTotal = size * 16 * 2;
+				m_paramDataTotal = size * 16;
+				m_matrixData = new VCG_Number[m_matrixDataTotal];
 				
 				// scale x,scale y,scale z,	rotation x,rotation y,rotation z,	position x,position y,position z
-				m_paramData = new VCG_Number[size * 16]{};
+				m_paramData = new VCG_Number[m_paramDataTotal]{};
 
-				for (size_t i = 0; i < size; ++i)
+				size_t matTot = size * 2;
+				size_t i = 0;
+				for (; i < matTot; ++i)
 				{
 					std::memcpy(m_matrixData + i * 16, &s_initMatData, VCG_MATRIX4_DATA_SIZE);
 				}
-				for (size_t k = 0; k < total; ++k)
+				for (i = 0; i < size; ++i)
 				{
 					createContainer();
+				}
+			}
+		}
+
+		void MatTransform::allocate2(unsigned int total)
+		{
+			if (m_initBoo && total > 0)
+			{
+				m_initBoo = false;
+				m_total = total;
+				size_t size = static_cast<size_t>(total);
+				m_matrixDataTotal = size * 16 * 5;
+				m_paramDataTotal = size * 16;
+				m_matrixData = new VCG_Number[m_matrixDataTotal];
+
+				// scale x,scale y,scale z,	rotation x,rotation y,rotation z,	position x,position y,position z
+				m_paramData = new VCG_Number[m_paramDataTotal]{};
+
+				size_t matTot = size * 5;
+				size_t i = 0;
+				for (; i < matTot; ++i)
+				{
+					std::memcpy(m_matrixData + i * 16, &s_initMatData, VCG_MATRIX4_DATA_SIZE);
+				}
+				for (i = 0; i < size; ++i)
+				{
+					createContainer2();
 				}
 			}
 		}
@@ -128,6 +217,44 @@ namespace app
 			std::memcpy(m_matrixData + i, &s_initMatData, VCG_MATRIX4_DATA_SIZE);
 		}
 
+		void MatTransform::updateParam2()
+		{
+			int k = 0;
+			auto pvs = m_paramData;
+			auto it = m_tars.begin();
+			auto end = m_tars.end();
+			VCG_Number scale = 1.0f;
+			for (; it != end; ++it)
+			{
+				auto tar = dynamic_cast<MatTransCar*>(*it);
+				auto& body = *(tar->body);
+				body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
+
+				std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
+				body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
+				scale = pvs[k + 6];
+				body.setScaleXYZ(scale, scale, scale);
+				tar->part0->setXYZ(pvs[k + 9], pvs[k + 10], 0.0f);
+				tar->part1->setXYZ(-pvs[k + 9], pvs[k + 10], 0.0f);
+				scale = pvs[k + 11];
+				tar->tar0->setZ(scale);
+				tar->tar1->setZ(-scale);
+				tar->tar2->setZ(scale);
+				tar->tar3->setZ(-scale);
+				//std::cout << "pvs[k + 4]: " << pvs[k + 4] << std::endl;
+
+				tar->zr = pvs[k + 12];
+				tar->zrSpd = pvs[k + 13];
+				scale = pvs[k + 14];
+				tar->tar0->setScaleXYZ(scale, scale, scale);
+				tar->tar1->setScaleXYZ(scale, scale, scale);
+				tar->tar2->setScaleXYZ(scale, scale, scale);
+				tar->tar3->setScaleXYZ(scale, scale, scale);
+
+				body.update();
+				k += 15;
+			}
+		}
 		void MatTransform::updateParam()
 		{
 			int k = 0;
@@ -136,11 +263,12 @@ namespace app
 			auto end = m_tars.end();
 			for (; it != end; ++it)
 			{
-				auto& body = *((*it)->body);
+				auto tar = dynamic_cast<MatTransTar*>(*it);
+				tar->tar0_ry = pvs[k + 4];
+				auto& body = *(tar->body);
 				body.setScaleXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
 				//std::cout << "pvs[k + 4]: " << pvs[k + 4] << std::endl;
-				(*it)->tar0_ry = pvs[k + 4];
-				//body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
+				body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
 				body.setXYZ(pvs[k + 6], pvs[k + 7], pvs[k + 8]);
 				body.update();
 				k += 9;
@@ -158,11 +286,11 @@ namespace app
 #ifdef WASM_DEV_ENV
 		emscripten::val MatTransform::getMatData()
 		{
-			return emscripten::val(emscripten::typed_memory_view(m_total * 32, m_matrixData));
+			return emscripten::val(emscripten::typed_memory_view(m_matrixDataTotal, m_matrixData));
 		}
 		emscripten::val MatTransform::getParamData()
 		{
-			return emscripten::val(emscripten::typed_memory_view(m_total * 16, m_paramData));
+			return emscripten::val(emscripten::typed_memory_view(m_paramDataTotal, m_paramData));
 		}
 		//	emscripten::val MatTransform::getIData()
 		//	{
@@ -198,24 +326,61 @@ namespace app
 				<< m_matrixData[index + 8] << "," << m_matrixData[index + 9] << "," << m_matrixData[index + 10] << "," << m_matrixData[index + 11] << "\n"
 				<< m_matrixData[index + 12] << "," << m_matrixData[index + 13] << "," << m_matrixData[index + 14] << "," << m_matrixData[index + 15] << "\n";
 		}
+		void MatTransform::createContainer2()
+		{
+			auto bodyMat = new Matrix4(m_matrixData, 16 * m_index++);
+			Matrix4Container* body = new Matrix4Container(bodyMat);
+			Matrix4Container* part0 = new Matrix4Container();
+			Matrix4Container* part1 = new Matrix4Container();
+
+			//	std::cout << "MatTransform::createContainer2(), part0 uid: " << part0->getUid() << std::endl;
+			//	std::cout << "MatTransform::createContainer2(), part1 uid: " << part1->getUid() << std::endl;
+			body->addChild(part0);
+			body->addChild(part1);
+
+			auto tar0Mat = new Matrix4(m_matrixData, 16 * m_index++);
+			auto tar1Mat = new Matrix4(m_matrixData, 16 * m_index++);
+			auto tar2Mat = new Matrix4(m_matrixData, 16 * m_index++);
+			auto tar3Mat = new Matrix4(m_matrixData, 16 * m_index++);
+
+			Matrix4Container* tar0 = new Matrix4Container(tar0Mat);
+			Matrix4Container* tar1 = new Matrix4Container(tar1Mat);
+			Matrix4Container* tar2 = new Matrix4Container(tar2Mat);
+			Matrix4Container* tar3 = new Matrix4Container(tar3Mat);
+
+			part0->addChild(tar0);
+			part0->addChild(tar1);
+			part1->addChild(tar2);
+			part1->addChild(tar3);
+
+			//body->update();
+
+			//std::cout << "MatTransform::createContainer2(), m_index: " << m_index << std::endl;
+			auto tar = new MatTransCar();
+			tar->body = body;
+			tar->part0 = part0;
+			tar->part1 = part1;
+			tar->tar0 = tar0;
+			tar->tar1 = tar1;
+			tar->tar2 = tar2;
+			tar->tar3 = tar3;
+			m_tars.push_back(tar);
+			m_tarsLen++;
+		}
 		void MatTransform::createContainer()
 		{
 			Matrix4Container* body = new Matrix4Container();
 			Matrix4Container* part0 = new Matrix4Container();
 			Matrix4Container* part1 = new Matrix4Container();
 
-			body->addChild(part0);
-			body->addChild(part1);
-
 			part0->setXYZ(-250.0f, 0.0f, 0.0f);
 			part1->setXYZ(250.0f, 0.0f, 0.0f);
 			body->addChild(part0);
 			body->addChild(part1);
 
-			auto tar01Mat = new Matrix4(m_matrixData, m_index * 16);
-			m_index++;
-			auto tar02Mat = new Matrix4(m_matrixData, m_index * 16);
-			m_index++;
+			auto tar01Mat = new Matrix4(m_matrixData, 16 * m_index++);
+			auto tar02Mat = new Matrix4(m_matrixData, 16 * m_index++);
+
 			Matrix4Container* tar0 = new Matrix4Container(tar01Mat);
 			Matrix4Container* tar1 = new Matrix4Container(tar02Mat);
 

@@ -18,7 +18,16 @@ namespace app
 {
 	namespace trans
 	{
-		class MatTransTar
+		class AbsTar
+		{
+		public:
+			AbsTar();
+			Matrix4Container				*body;
+
+			virtual void update() = 0;
+			virtual void destroy() = 0;
+		};
+		class MatTransTar: public AbsTar
 		{
 		public:
 			MatTransTar();
@@ -29,17 +38,41 @@ namespace app
 			VCG_Number tar0_ry;
 			VCG_Number tar1_ry;
 
-			Matrix4Container* body;
+			//Matrix4Container* body;
 			Matrix4Container* part0;
 			Matrix4Container* part1;
 			Matrix4Container* tar0;
 			Matrix4Container* tar1;
 
-			void update();
-			void destroy();
+			virtual void update() override;
+			virtual void destroy() override;
 		private:
 
 		};
+
+		class MatTransCar : public AbsTar
+		{
+		public:
+			MatTransCar();
+			~MatTransCar();
+
+			VCG_Number zr;
+			VCG_Number zrSpd;
+
+			Matrix4Container* part0;
+			Matrix4Container* part1;
+
+			Matrix4Container* tar0;
+			Matrix4Container* tar1;
+			Matrix4Container* tar2;
+			Matrix4Container* tar3;
+
+			virtual void update() override;
+			virtual void destroy() override;
+		private:
+
+		};
+
 		class MatTransform
 		{
 		public:
@@ -48,8 +81,10 @@ namespace app
 
 
 			void allocate(unsigned int total);
+			void allocate2(unsigned int total);
 			unsigned int getMatTotal();
 			void identityAt(unsigned int index);
+			void updateParam2();
 			void updateParam();
 			void calc();
 
@@ -71,12 +106,15 @@ namespace app
 			bool									m_initBoo;
 			unsigned int							m_total;
 			unsigned int							m_index;
+			size_t									m_matrixDataTotal;
+			size_t									m_paramDataTotal;
 			VCG_Number								*m_matrixData;
 			VCG_Number								*m_paramData;
 			Matrix4Container						*m_matContainer;
 			size_t									m_tarsLen;
-			std::vector<MatTransTar*>				m_tars;
+			std::vector<AbsTar*>				m_tars;
 
+			void createContainer2();
 			void createContainer();
 
 		};
