@@ -21,10 +21,13 @@ include_directories ("${PROJECT_SOURCE_DIR}/demo")
 add_subdirectory (demo)
 set (EXTRA_LIBS ${EXTRA_LIBS} demo)
 
-
 include_directories ("${PROJECT_SOURCE_DIR}/wasm")
 add_subdirectory (wasm)
 set (EXTRA_LIBS ${EXTRA_LIBS} wasm)
+
+include_directories ("${PROJECT_SOURCE_DIR}/simnav")
+add_subdirectory (simnav)
+set (EXTRA_LIBS ${EXTRA_LIBS} simnav)
 
 # add the executable
 add_executable(voxcgeometry voxcgeom.cc)

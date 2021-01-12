@@ -5,7 +5,7 @@ em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/
 
 em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
-em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../voxcgeom/math/Matrix4Container.cc ../demo/math/MatrixComputer.cc ./app/trans/MatTransform.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
+em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../voxcgeom/math/Matrix4Container.cc ../demo/math/MatrixComputer.cc ./app/trans/MatTransform.cc ../simnav/stara/StNode.cc  ../simnav/stara/BinaryHeap.cc  ../simnav/stara/StarA.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
 */
 #include <iostream>
@@ -16,6 +16,8 @@ em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../vox
 #include "../voxcgeom/math/Matrix4.h"
 #include "../demo/math/MatrixComputer.h"
 #include "../wasm/app/trans/MatTransform.h"
+
+#include "../simnav/stara/StarA.h"
 
 #ifdef WASM_DEV_ENV
 #include <emscripten.h>
@@ -136,6 +138,17 @@ EMSCRIPTEN_BINDINGS(pmodule)
         .function("calc", &MatTransform::calc)
         .function("coutThisMatAt", &MatTransform::coutThisMatAt)
         ;
+
+
+    class_<StarA>("StarA")
+        .constructor()
+        .function("allocate", &StarA::allocate)
+        .function("initialize", &StarA::initialize)
+        .function("setGoValueByRC", &StarA::setGoValueByRC)
+        .function("searchPathDataByRC", &StarA::searchPathDataByRC)
+        .function("getPathData", &StarA::getPathData)
+        .function("getPathDataTotal", &StarA::getPathDataTotal)
+        ;
     
 }
 #else
@@ -144,9 +157,11 @@ void transformDemoMain()
 {
     std::cout << "transformDemoMain..." << std::endl;
 }
+StarA* staPtr = nullptr;
 int main(int argc, char* argv[])
 {
     std::cout << "transformDemo main run()..." << std::endl;
+    /*
     MatTransform mtf0;
     //mtf0.allocate(1);
     mtf0.allocate2(1);
@@ -158,6 +173,12 @@ int main(int argc, char* argv[])
     mtf0.calc();
     mtf0.coutThisMatAt(0);
     mtf0.coutThisMatAt(1);
+    //*/
+    StarA st;
+    st.allocate(256);
+    st.buildTest();
+    std::cout << "transformDemo main run() end..." << std::endl;
+    //*/
     return 0;
 }
 
