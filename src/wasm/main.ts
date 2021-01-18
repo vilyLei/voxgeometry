@@ -98,7 +98,8 @@ class WasmLoader
     {
         let pwindow:any = window;
         //let path:string = "wasm/demomain.js";
-        let path:string = "wasm/matDemo.js";
+        //let path:string = "wasm/matDemo.js";
+        let path:string = "wasm/voxwasm.js";
         let decoder_script:any = document.getElementById("wasm_script");
         if (decoder_script !== null)
         {

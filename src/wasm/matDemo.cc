@@ -47,6 +47,9 @@ em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/
 em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc matDemo.cc -std=c++11 -D WASM_DEV_ENV
 em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc matDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
+cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake --build .
 */
 #include <iostream>
 #include <iomanip>
@@ -192,6 +195,9 @@ void testMathDemo()
 //cmake -DCMAKE_BUILD_TYPE=Debug -G \"Unix Makefiles\" -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake . && make
 //cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake . && make
 //cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake . && ALL_BUILD
+
+//cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+
 EMSCRIPTEN_BINDINGS(pmodule)
 {
 

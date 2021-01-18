@@ -11,6 +11,11 @@ export namespace app
         {
             console.log("MatComputerDemo::initialize() A.....");
             module.showVersion();
+        }
+        initialize3(module:any):void
+        {
+            console.log("MatComputerDemo::initialize() A.....");
+            module.showVersion();
             let ClassModule:any = module;
             let pclass = ClassModule.MatrixComputer;
             if(pclass != null)

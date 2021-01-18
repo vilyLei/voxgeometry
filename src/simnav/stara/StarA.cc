@@ -23,6 +23,10 @@ namespace simnav
 		StarA::~StarA()
 		{
 		}
+		void StarA::Calc(unsigned int total)
+		{
+			std::cout<<("StarA::calc")<<std::endl;
+		}
 		void StarA::allocate(unsigned int total)
 		{
 			if (m_allocateBoo && total > 0)

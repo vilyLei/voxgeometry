@@ -2,25 +2,30 @@
 
 em++ --bind -o ../../public/wasm/matDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc matDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
-
 em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../demo/math/MatrixComputer.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
 em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../voxcgeom/math/Matrix4Container.cc ../demo/math/MatrixComputer.cc ./app/trans/MatTransform.cc ../simnav/stara/StNode.cc  ../simnav/stara/BinaryHeap.cc  ../simnav/stara/StarA.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
+cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+
 cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DPROGType=ON -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DPROGType=ON -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
 cmake --build .
 */
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include "../voxcgeom/cgeomPre.h"
-#include "../voxcgeom/math/Vec3D.h"
-#include "../voxcgeom/math/Matrix4.h"
-#include "../demo/math/MatrixComputer.h"
-#include "../wasm/app/trans/MatTransform.h"
+#include "voxcgeomConfig.h"
+#include "./voxcgeom/cgeomPre.h"
+#include "./voxcgeom/math/Vec3D.h"
+#include "./voxcgeom/math/Matrix4.h"
+#include "./demo/math/MatrixComputer.h"
+#include "./wasm/app/trans/MatTransform.h"
 
-#include "../simnav/stara/StarA.h"
+#include "./simnav/stara/StarA.h"
 
 #ifdef WASM_DEV_ENV
 #include <emscripten.h>
@@ -38,6 +43,7 @@ void showVersion()
     std::cout<<"VCG_MATH_E: "<< VCG_MATH_E <<"\n";
     VCG_Number pnumber = 10.012;
     std::cout<<"VCG_Number pnumber: "<< pnumber <<"\n";
+    MatTransform mtf0;
 
     Vec3D vec3a(1.0f,2.1f,3.3f);
     Vec3D vec3b(1.0f,-2.1f,3.3f);
@@ -163,8 +169,8 @@ void transformDemoMain()
 StarA* staPtr = nullptr;
 int main(int argc, char* argv[])
 {
-    std::cout << "transformDemo main run()..." << std::endl;
-    /*
+    std::cout << "voxcg win: transformDemo main run()..." << std::endl;
+    ///*
     MatTransform mtf0;
     //mtf0.allocate(1);
     mtf0.allocate2(1);

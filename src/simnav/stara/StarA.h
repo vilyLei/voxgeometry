@@ -25,6 +25,8 @@ namespace simnav
 			StarA();
 			virtual ~StarA();
 
+			static void Calc(unsigned int total);
+
 			void allocate(unsigned int total);
 #ifdef WASM_DEV_ENV
 			emscripten::val getPathData();
