@@ -119,10 +119,7 @@ set(PROJECT_FILES
     ${CGEOM_FILES}
     )
 add_library(voxcg STATIC ${PROJECT_FILES})
-
-
-#cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
-#cmake --build . 
+# DPROGType is the cmake command condition parameter: -DPROGType=ON or -DPROGType=OFF
 #
 target_link_libraries (voxcgw ${EXTRA_LIBS})
 
