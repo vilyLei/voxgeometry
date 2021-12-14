@@ -1,13 +1,13 @@
 console.log("wasm test init...");
 
-import * as MatComputerDemoT from "./app/MatComputerDemo";
+import { MatComputerDemo } from "./app/MatComputerDemo";
+import { TransformDemo } from "./app/TransformDemo";
 
-import MatComputerDemo = MatComputerDemoT.app.MatComputerDemo;
+// let demoIns = new MatComputerDemo();
+let demoIns = new TransformDemo();
 
-let demoIns:MatComputerDemo = new MatComputerDemo();
-class WasmCore
-{
-    static Module:any = null;
+class WasmCore {
+    static Module: any = null;
 }
 /*
 class AppDemo
@@ -68,62 +68,52 @@ class AppDemo
 //0049f86d2f30ce3d108686631728b2b868e3f97a
 let demoIns:AppDemo = new AppDemo();
 */
-function main():void
-{
+function main(): void {
     console.log("---- demo --- init --");
-    demoIns.initialize( WasmCore.Module );
-    function mainLoop(now:any):void
-    {
+    demoIns.initialize(WasmCore.Module);
+    function mainLoop(now: any): void {
         demoIns.run();
         window.requestAnimationFrame(mainLoop);
     }
     window.requestAnimationFrame(mainLoop);
-    console.log("---- demo --- running --"); 
+    console.log("---- demo --- running --");
 }
 
-class WasmLoader
-{
-    wasmModule:any = null;
-    constructor()
-    {
+class WasmLoader {
+    wasmModule: any = null;
+    constructor() {
     }
-    private moduleLoaded(pmodule:any):void
-    {
-        console.log("WasmLoader::moduleLoaded(), wasm compile ok, pmodule: ",pmodule);
+    private moduleLoaded(pmodule: any): void {
+        console.log("WasmLoader::moduleLoaded(), wasm compile ok, pmodule: ", pmodule);
         this.wasmModule = pmodule;
         WasmCore.Module = this.wasmModule;
         main();
     }
-    initWasm():void
-    {
-        let pwindow:any = window;
+    initWasm(): void {
+        let pwindow: any = window;
         //let path:string = "wasm/demomain.js";
         //let path:string = "wasm/matDemo.js";
-        let path:string = "wasm/voxwasm.js";
-        let decoder_script:any = document.getElementById("wasm_script");
-        if (decoder_script !== null)
-        {
-          return;
+        //let path:string = "wasm/voxcgw.js";
+        let path: string = "wasm/transformDemo.js";
+        let decoder_script: any = document.getElementById("wasm_script");
+        if (decoder_script !== null) {
+            return;
         }
-        let head:any = document.getElementsByTagName("head")[0];
-        let element:any = document.createElement("script");
+        let head: any = document.getElementsByTagName("head")[0];
+        let element: any = document.createElement("script");
         element.id = "decoder_script";
         element.type = "text/javascript";
         element.src = path;
-        let times:number = 0;
-        let selfT:any = this;
-        element.onload = function(dracoDecoder:any)
-        {
+        let times: number = 0;
+        let selfT: any = this;
+        element.onload = function (dracoDecoder: any) {
             console.log("loaded wasm wapper js.");
-            if(pwindow["Module"] != undefined)
-            {
-                let module:any = pwindow["Module"];
-                module["onRuntimeInitialized"] = function()
-                {
+            if (pwindow["Module"] != undefined) {
+                let module: any = pwindow["Module"];
+                module["onRuntimeInitialized"] = function () {
                     console.log("onRuntimeInitialized do..");
                 }
-                module["onModuleLoaded"] = function(pmodule:any)
-                {
+                module["onModuleLoaded"] = function (pmodule: any) {
                     selfT.moduleLoaded(pmodule);
                     console.log("onModuleLoaded run end..");
                 };
@@ -134,5 +124,5 @@ class WasmLoader
     }
 }
 
-let wloader:WasmLoader = new WasmLoader();
+let wloader: WasmLoader = new WasmLoader();
 wloader.initWasm();

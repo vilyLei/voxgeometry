@@ -8,11 +8,11 @@ em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../vox
 
 cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
 
-cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
-cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
-cmake .. -DPROGType=ON -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
-cmake .. -DPROGType=ON -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DPROGType=ON -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DPROGType=ON -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
 cmake --build .
 */
 #include <iostream>
