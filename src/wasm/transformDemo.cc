@@ -7,8 +7,8 @@ em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../vox
 
 em++ --bind -o ../../public/wasm/transformDemo.js ../voxcgeom/cgeomPre.cc ../voxcgeom/math/Vec3D.cc ../voxcgeom/math/Matrix4.cc ../voxcgeom/math/Matrix4Container.cc ../demo/math/MatrixComputer.cc ./app/trans/MatTransform.cc ../simnav/stara/StNode.cc  ../simnav/stara/BinaryHeap.cc  ../simnav/stara/StarA.cc transformDemo.cc -std=c++11 -D WASM_DEV_ENV -O2 -s WASM=1
 
-cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsdk/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DPROGType=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=D:/emsc/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -G "NMake Makefiles"
 cmake --build .
 */
 #include <iostream>

@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
+#include <unordered_map>
 #include "voxcgeomConfig.h"
 #include "voxcgeom/math/Vec3D.h"
 #include "voxcgeom/math/Matrix4.h"
@@ -122,12 +124,76 @@ void testMathDemo()
     matCompter.coutThis();
     //*/
 }
+/*
+bool checkPerfectNumber(int num){
+{
+    //  int value = 1;
+    //  for (int i = 2; i < num; ++i)
+    //  {
+    //      //value += (num % i) == 0 ? 0 : i;
+    //  }
+    //  return value == num;
+    return true;
+}
+//*/
+bool uniqueOccurrences(std::vector<int>& arr) {
+
+    std::unordered_map<int, int> int_map;
+    std::unordered_map<int, unsigned char> count_map;
+    std::vector<int> keys;
+    int value;
+    for each (auto k in arr)
+    {
+        if (int_map.find(k) != int_map.end()) {
+            value = int_map[k];
+            int_map[k] += 1;
+        }else {
+            int_map.insert(std::unordered_map<int, int>::value_type(k, 1));
+            keys.push_back(k);
+        }
+    }
+    for each (auto k in keys)
+    {
+        value = int_map[k];
+        if (count_map.find(value) != count_map.end()){
+            return false;
+        }
+        else{
+            count_map.insert(std::unordered_map<int, unsigned char>::value_type(value, 1));
+        }
+    }
+    return true;
+}
+bool checkPerfectNumber(int num) {
+    int value = 1;
+    for (int i = 2; i < num; ++i)
+    {
+        value += (num % i) ? 0 : i;
+    }
+    return value == num;
+}
+void exampleTest()
+{
+    std::cout << "exampleTest begin..." << std::endl;
+
+    //  bool hit = checkPerfectNumber(28);
+    //  std::cout << "hit: "<< hit << std::endl;
+
+
+    std::vector<int> ivs0 = {1,2,2,1,1,3};
+    std::vector<int> ivs = {1,1,3,3,4,5,5,5};
+    std::vector<int> ivs2 = {1,2,3,34,44,53,156,85};
+    bool hit = uniqueOccurrences(ivs0);
+    std::cout << "hit: "<< hit << std::endl;
+
+}
 int main (int argc, char *argv[])
 {
     //  testSimple();
     //  testCone();
     //  testMatrix4();
-    testMathDemo();
+    //  testMathDemo();
+    exampleTest();
     //  std::cout<< std::setiosflags(std::ios::fixed);
     //  std::cout<< std::setprecision(20) << VCG_MATH_PI << std::endl;
     //  std::cout<<"boxcgeom init...\n";

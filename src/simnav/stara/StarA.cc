@@ -25,7 +25,7 @@ namespace simnav
 		}
 		void StarA::Calc(unsigned int total)
 		{
-			std::cout<<("StarA::calc")<<std::endl;
+			std::cout << ("StarA::calc") << std::endl;
 		}
 		void StarA::allocate(unsigned int total)
 		{
@@ -92,10 +92,14 @@ namespace simnav
 			//		std::cout << "StarA::buildTest().. path->size(len): " << len << std::endl;
 			//	}
 
-			searchPathDataByRC(0, 0, 4, 4);
+			searchPathDataByRC(1, 1, 4, 3);
 			unsigned int dataLen = getPathDataTotal();
-			std::cout << "StarA::buildTest().. path dataLen: " << dataLen << std::endl;
-			std::cout << "StarA::buildTest().. run end."<< std::endl;
+			std::cout << "step 1 StarA::buildTest().. path dataLen: " << dataLen << std::endl;
+			std::cout << "step 1 StarA::buildTest().. run end." << std::endl;
+			searchPathDataByRC(1, 1, 4, 3);
+			dataLen = getPathDataTotal();
+			std::cout << "step 2 StarA::buildTest().. path dataLen: " << dataLen << std::endl;
+			std::cout << "step 2 StarA::buildTest().. run end."<< std::endl;
 		}
 
 		void StarA::initStateByGoValueList(std::vector<unsigned int>& stvs, unsigned int rn, unsigned int cn, unsigned int maxSteps)
@@ -228,7 +232,7 @@ namespace simnav
 			//trace("m_openList.len: ",m_openList.length);
 			len = m_closeList.size();
 			if (len > 0) {
-				for (i = len - 1; i >= 0; i--)
+				for (i = 0; i < len; i++)
 				{
 					m_closeList[i]->sta = StNode::STA_NONE;
 				}
