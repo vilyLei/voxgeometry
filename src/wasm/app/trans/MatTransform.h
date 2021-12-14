@@ -112,7 +112,7 @@ namespace app
 			VCG_Number								*m_paramData;
 			Matrix4Container						*m_matContainer;
 			size_t									m_tarsLen;
-			std::vector<AbsTar*>				m_tars;
+			std::vector<AbsTar*>					m_tars;
 
 			void createContainer2();
 			void createContainer();

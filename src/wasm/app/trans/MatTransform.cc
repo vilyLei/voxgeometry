@@ -230,7 +230,7 @@ namespace app
 				auto& body = *(tar->body);
 				body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
 
-				std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
+				//std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
 				body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
 				scale = pvs[k + 6];
 				body.setScaleXYZ(scale, scale, scale);
