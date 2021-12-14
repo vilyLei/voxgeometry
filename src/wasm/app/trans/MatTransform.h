@@ -85,6 +85,7 @@ namespace app
 			unsigned int getMatTotal();
 			void identityAt(unsigned int index);
 			void updateParam2();
+			void updateParam2MIn();
 			void updateParam();
 			void calc();
 

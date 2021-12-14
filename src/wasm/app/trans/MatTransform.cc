@@ -255,6 +255,29 @@ namespace app
 				k += 15;
 			}
 		}
+
+		void MatTransform::updateParam2MIn()
+		{
+			int k = 0;
+			auto pvs = m_paramData;
+			auto it = m_tars.begin();
+			auto end = m_tars.end();
+			VCG_Number scale = 1.0f;
+			for (; it != end; ++it)
+			{
+				auto tar = dynamic_cast<MatTransCar*>(*it);
+				auto& body = *(tar->body);
+				body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
+
+				//std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
+				body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
+				scale = pvs[k + 6];
+				body.setScaleXYZ(scale, scale, scale);
+
+				body.update();
+				k += 15;
+			}
+		}
 		void MatTransform::updateParam()
 		{
 			int k = 0;
