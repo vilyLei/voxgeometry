@@ -90,10 +90,12 @@ namespace app
 			void calc();
 
 #ifdef WASM_DEV_ENV
+			emscripten::val getStatusData();
 			emscripten::val getMatData();
 			emscripten::val getParamData();
 			//	emscripten::val getIData();
 #else
+			VCG_Uint16* getStatusData();
 			VCG_Number* getMatData();
 			VCG_Number* getParamData();
 			//	unsigned short* getIData();
@@ -107,8 +109,10 @@ namespace app
 			bool									m_initBoo;
 			unsigned int							m_total;
 			unsigned int							m_index;
+			size_t									m_statusDataTotal;
 			size_t									m_matrixDataTotal;
 			size_t									m_paramDataTotal;
+			VCG_Uint16								*m_statusData;
 			VCG_Number								*m_matrixData;
 			VCG_Number								*m_paramData;
 			Matrix4Container						*m_matContainer;

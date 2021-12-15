@@ -133,6 +133,7 @@ EMSCRIPTEN_BINDINGS(pmodule)
         .constructor()
         .function("allocate", &MatTransform::allocate)
         .function("allocate2", &MatTransform::allocate2)
+        .function("getStatusData", &MatTransform::getStatusData)
         .function("getMatData", &MatTransform::getMatData)
         .function("getParamData", &MatTransform::getParamData)
         .function("updateParam", &MatTransform::updateParam)
@@ -165,10 +166,10 @@ StarA* staPtr = nullptr;
 int main(int argc, char* argv[])
 {
     std::cout << "transformDemo main run()..." << std::endl;
-    /*
+    ///*
     MatTransform mtf0;
     //mtf0.allocate(1);
-    mtf0.allocate2(1);
+    mtf0.allocate2(3);
     VCG_Number* paramvs = mtf0.getParamData();
     paramvs[0] = 1001.0f; paramvs[1] = 0.0f; paramvs[2] = 2001.0f;
     paramvs[3] = 80.0f; paramvs[4] = -30.0f; paramvs[5] = 100.0f;
@@ -178,6 +179,9 @@ int main(int argc, char* argv[])
     mtf0.coutThisMatAt(0);
     mtf0.coutThisMatAt(1);
     //*/
+    //MatTransform mtf0;
+    //mtf0.allocate(17);
+    /*
     StarA* sa = nullptr;
     //sa->Calc(1);
 

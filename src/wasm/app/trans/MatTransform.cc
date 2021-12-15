@@ -119,8 +119,10 @@ namespace app
             : m_initBoo(true)
             , m_total(0)
 			, m_index(0)
+			, m_statusDataTotal(0)
 			, m_matrixDataTotal(0)
 			, m_paramDataTotal(0)
+            , m_statusData(nullptr)
             , m_matrixData(nullptr)
             , m_paramData(nullptr)
 			, m_matContainer(nullptr)
@@ -129,6 +131,11 @@ namespace app
         }
         MatTransform::~MatTransform()
         {
+			if (m_statusData != nullptr)
+			{
+				delete[] m_statusData;
+				m_statusData = nullptr;
+			}
 			if (m_matrixData != nullptr)
 			{
 				if (m_tarsLen > 0)
@@ -160,13 +167,17 @@ namespace app
 				m_initBoo = false;
 				m_total = total;
 				size_t size = static_cast<size_t>(total);
+				m_statusDataTotal = size;
 				m_matrixDataTotal = size * 16 * 2;
 				m_paramDataTotal = size * 16;
-				m_matrixData = new VCG_Number[m_matrixDataTotal];
-				
+				m_statusData = new VCG_Uint16[m_statusDataTotal]{};
+				m_matrixData = new VCG_Number[m_matrixDataTotal];				
 				// scale x,scale y,scale z,	rotation x,rotation y,rotation z,	position x,position y,position z
 				m_paramData = new VCG_Number[m_paramDataTotal]{};
-
+				//std::cout << "m_statusData[0]: " << m_statusData[0] << std::endl;
+				//std::cout << "m_statusData[1]: " << m_statusData[1] << std::endl;
+				//std::cout << "m_statusData[2]: " << m_statusData[2] << std::endl;
+				//std::cout << "m_statusData[3]: " << m_statusData[3] << std::endl;
 				size_t matTot = size * 2;
 				size_t i = 0;
 				for (; i < matTot; ++i)
@@ -187,10 +198,12 @@ namespace app
 				m_initBoo = false;
 				m_total = total;
 				size_t size = static_cast<size_t>(total);
+				m_statusDataTotal = size;
 				m_matrixDataTotal = size * 16 * 5;
 				m_paramDataTotal = size * 16;
 				m_matrixData = new VCG_Number[m_matrixDataTotal];
 
+				m_statusData = new VCG_Uint16[m_statusDataTotal]{};
 				// scale x,scale y,scale z,	rotation x,rotation y,rotation z,	position x,position y,position z
 				m_paramData = new VCG_Number[m_paramDataTotal]{};
 
@@ -219,6 +232,7 @@ namespace app
 
 		void MatTransform::updateParam2()
 		{
+			int i = 0;
 			int k = 0;
 			auto pvs = m_paramData;
 			auto it = m_tars.begin();
@@ -226,38 +240,42 @@ namespace app
 			VCG_Number scale = 1.0f;
 			for (; it != end; ++it)
 			{
-				auto tar = dynamic_cast<MatTransCar*>(*it);
-				auto& body = *(tar->body);
-				body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
+				if (m_statusData[i++] < 1) {
 
-				//std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
-				body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
-				scale = pvs[k + 6];
-				body.setScaleXYZ(scale, scale, scale);
-				tar->part0->setXYZ(pvs[k + 9], pvs[k + 10], 0.0f);
-				tar->part1->setXYZ(-pvs[k + 9], pvs[k + 10], 0.0f);
-				scale = pvs[k + 11];
-				tar->tar0->setZ(scale);
-				tar->tar1->setZ(-scale);
-				tar->tar2->setZ(scale);
-				tar->tar3->setZ(-scale);
-				//std::cout << "pvs[k + 4]: " << pvs[k + 4] << std::endl;
+					auto tar = dynamic_cast<MatTransCar*>(*it);
+					auto& body = *(tar->body);
+					body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
 
-				tar->zr = pvs[k + 12];
-				tar->zrSpd = pvs[k + 13];
-				scale = pvs[k + 14];
-				tar->tar0->setScaleXYZ(scale, scale, scale);
-				tar->tar1->setScaleXYZ(scale, scale, scale);
-				tar->tar2->setScaleXYZ(scale, scale, scale);
-				tar->tar3->setScaleXYZ(scale, scale, scale);
+					//std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
+					body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
+					scale = pvs[k + 6];
+					body.setScaleXYZ(scale, scale, scale);
+					tar->part0->setXYZ(pvs[k + 9], pvs[k + 10], 0.0f);
+					tar->part1->setXYZ(-pvs[k + 9], pvs[k + 10], 0.0f);
+					scale = pvs[k + 11];
+					tar->tar0->setZ(scale);
+					tar->tar1->setZ(-scale);
+					tar->tar2->setZ(scale);
+					tar->tar3->setZ(-scale);
+					//std::cout << "pvs[k + 4]: " << pvs[k + 4] << std::endl;
 
-				body.update();
+					tar->zr = pvs[k + 12];
+					tar->zrSpd = pvs[k + 13];
+					scale = pvs[k + 14];
+					tar->tar0->setScaleXYZ(scale, scale, scale);
+					tar->tar1->setScaleXYZ(scale, scale, scale);
+					tar->tar2->setScaleXYZ(scale, scale, scale);
+					tar->tar3->setScaleXYZ(scale, scale, scale);
+
+					body.update();
+				}
 				k += 15;
 			}
 		}
 
 		void MatTransform::updateParam2MIn()
 		{
+			int i = 0;
 			int k = 0;
 			auto pvs = m_paramData;
 			auto it = m_tars.begin();
@@ -265,16 +283,19 @@ namespace app
 			VCG_Number scale = 1.0f;
 			for (; it != end; ++it)
 			{
-				auto tar = dynamic_cast<MatTransCar*>(*it);
-				auto& body = *(tar->body);
-				body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
+				if (m_statusData[i++] < 1) {
 
-				//std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
-				body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
-				scale = pvs[k + 6];
-				body.setScaleXYZ(scale, scale, scale);
+					auto tar = dynamic_cast<MatTransCar*>(*it);
+					auto& body = *(tar->body);
+					body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
 
-				body.update();
+					//std::cout << "pvs[k + 2]: " << pvs[k + 4] << std::endl;
+					body.setRotationXYZ(pvs[k + 3], pvs[k + 4], pvs[k + 5]);
+					scale = pvs[k + 6];
+					body.setScaleXYZ(scale, scale, scale);
+
+					body.update();
+				}
 				k += 15;
 			}
 		}
@@ -307,6 +328,10 @@ namespace app
 			}
 		}
 #ifdef WASM_DEV_ENV
+		emscripten::val MatTransform::getStatusData()
+		{
+			return emscripten::val(emscripten::typed_memory_view(m_statusDataTotal, m_statusData));
+		}
 		emscripten::val MatTransform::getMatData()
 		{
 			return emscripten::val(emscripten::typed_memory_view(m_matrixDataTotal, m_matrixData));
@@ -320,6 +345,10 @@ namespace app
 		//		return emscripten::val(emscripten::typed_memory_view(m_total, m_iData));
 		//	}
 #else
+		VCG_Uint16* MatTransform::getStatusData()
+		{
+			return m_statusData;
+		}
 		VCG_Number* MatTransform::getMatData()
 		{
 			return m_matrixData;

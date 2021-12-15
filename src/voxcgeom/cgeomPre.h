@@ -27,6 +27,8 @@ typedef double									VCG_Number;
 #else
 typedef double									VCG_Number;
 #endif
+typedef unsigned short							VCG_Uint16;
+typedef unsigned char							VCG_Uint8;
 const size_t									VCG_Number_SIZE = sizeof(VCG_Number);
 const size_t									VCG_MATRIX4_DATA_SIZE = VCG_Number_SIZE * 16;
 const VCG_Number								VCG_MATH_MIN_POSITIVE = 1e-7f;
