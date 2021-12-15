@@ -281,10 +281,13 @@ namespace app
 			auto it = m_tars.begin();
 			auto end = m_tars.end();
 			VCG_Number scale = 1.0f;
+			// std::cout << "updateParam2MIn()..." << std::endl;
 			for (; it != end; ++it)
 			{
+				// std::cout << "m_statusData["<<i<<"]: " << m_statusData[i] << std::endl;
 				if (m_statusData[i++] < 1) {
 
+					// std::cout << " run 2 min." << std::endl;
 					auto tar = dynamic_cast<MatTransCar*>(*it);
 					auto& body = *(tar->body);
 					body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
@@ -320,11 +323,14 @@ namespace app
 		}
 		void MatTransform::calc()
 		{
+			int i = 0;
 			auto it = m_tars.begin();
 			auto end = m_tars.end();
 			for (; it != end; ++it)
 			{
-				(*it)->update();
+				if (m_statusData[i++] < 1) {
+					(*it)->update();
+				}
 			}
 		}
 #ifdef WASM_DEV_ENV

@@ -174,7 +174,12 @@ int main(int argc, char* argv[])
     paramvs[0] = 1001.0f; paramvs[1] = 0.0f; paramvs[2] = 2001.0f;
     paramvs[3] = 80.0f; paramvs[4] = -30.0f; paramvs[5] = 100.0f;
     paramvs[6] = 0.1f; paramvs[7] = 0.2f; paramvs[8] = 1.0f;
-    mtf0.updateParam2();
+    //mtf0.updateParam2();
+    auto stu16Arr = mtf0.getStatusData();
+    stu16Arr[0] = 1;
+    stu16Arr[1] = 1;
+    stu16Arr[2] = 1;
+    mtf0.updateParam2MIn();
     mtf0.calc();
     mtf0.coutThisMatAt(0);
     mtf0.coutThisMatAt(1);
