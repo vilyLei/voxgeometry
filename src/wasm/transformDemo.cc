@@ -176,9 +176,9 @@ int main(int argc, char* argv[])
     paramvs[6] = 0.1f; paramvs[7] = 0.2f; paramvs[8] = 1.0f;
     //mtf0.updateParam2();
     auto stu16Arr = mtf0.getStatusData();
-    stu16Arr[0] = 1;
-    stu16Arr[1] = 1;
-    stu16Arr[2] = 1;
+    stu16Arr[0] = 2;
+    stu16Arr[1] = 2;
+    stu16Arr[2] = 2;
     mtf0.updateParam2MIn();
     mtf0.calc();
     mtf0.coutThisMatAt(0);

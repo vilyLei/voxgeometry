@@ -240,7 +240,7 @@ namespace app
 			VCG_Number scale = 1.0f;
 			for (; it != end; ++it)
 			{
-				if (m_statusData[i++] < 1) {
+				if (m_statusData[i++] > 1) {
 
 					auto tar = dynamic_cast<MatTransCar*>(*it);
 					auto& body = *(tar->body);
@@ -285,9 +285,9 @@ namespace app
 			for (; it != end; ++it)
 			{
 				// std::cout << "m_statusData["<<i<<"]: " << m_statusData[i] << std::endl;
-				if (m_statusData[i++] < 1) {
+				if (m_statusData[i++] > 1) {
 
-					// std::cout << " run 2 min." << std::endl;
+					//std::cout << " run 2 min." << std::endl;
 					auto tar = dynamic_cast<MatTransCar*>(*it);
 					auto& body = *(tar->body);
 					body.setXYZ(pvs[k], pvs[k + 1], pvs[k + 2]);
@@ -328,7 +328,7 @@ namespace app
 			auto end = m_tars.end();
 			for (; it != end; ++it)
 			{
-				if (m_statusData[i++] < 1) {
+				if (m_statusData[i++] > 1) {
 					(*it)->update();
 				}
 			}
