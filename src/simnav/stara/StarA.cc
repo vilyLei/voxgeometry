@@ -259,7 +259,7 @@ namespace simnav
 				while (true) {
 
 					if (m_openBH.getLength() < 2) {//无路可走
-						std::cout<<("无路可走 A")<<std::endl;
+						std::cout<<("search path failure 1")<<std::endl;
 						return &m_roadArr;
 						break;
 					}
@@ -302,7 +302,7 @@ namespace simnav
 
 					if (m_openBH.getLength() < 2) {//无路可走
 
-						std::cout << ("无路可走 B") << std::endl;
+						std::cout << ("search path failure 2") << std::endl;
 						return &m_roadArr;
 						break;
 					}
@@ -334,7 +334,7 @@ namespace simnav
 				}//End while
 			}
 
-			std::cout << ("无 is null.") << std::endl;
+			std::cout << ("no path") << std::endl;
 			return nullptr;
 		}
 
