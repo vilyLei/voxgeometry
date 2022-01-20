@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.21)
 project (voxcgeometry)
 # The version number.
 set (VOXCGEOMTRY_VERSION_MAJOR 1)
